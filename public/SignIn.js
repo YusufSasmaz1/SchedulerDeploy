@@ -15,6 +15,8 @@ form.addEventListener('submit', function (event) {
         },
         body: JSON.stringify({ email, password })
     })
+
+    //Check for valid email password
     .then(response => {
         if (response.ok) {
             alert("Login successful!");
@@ -28,6 +30,7 @@ form.addEventListener('submit', function (event) {
     });
 });
 
+//Hide/show password 
 togglePassword.addEventListener('click', function () {
     const icon = togglePassword.querySelector("i");
     const isPassword1 = passwordInput.type === "password";

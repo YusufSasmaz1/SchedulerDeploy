@@ -1,3 +1,4 @@
+//Mongo log in and info is not in public folder, so pull it from private .env file
 require("dotenv").config();
 
 // server.js
@@ -21,11 +22,11 @@ const userSchema = new mongoose.Schema({
   lastName:  String,
   email:     String,
   password:  String
-}, { collection: "users" });  // using 'users' collection
+}, { collection: "users" });  // insert all data into the "users" collection in Mongo
 
 const User = mongoose.model("User", userSchema);
 
-// Middleware
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -40,7 +41,7 @@ app.get("/signin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "SignInPage_Scheduler.html"));
 });
 
-// POST /signup → save new user
+// Save user after succesful sign up
 app.post("/signup", async (req, res) => {
   
   try {
@@ -55,7 +56,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-// POST /login → check credentials
+// Check for valid email and password
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {

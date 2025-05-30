@@ -1,4 +1,4 @@
-// --- Dynamic Calendar View Setup ---
+//initalize variables
 
 function getMonthName(monthIndex) {
   return [
@@ -15,11 +15,11 @@ function getFirstDayOfWeek(year, month) {
   return new Date(year, month, 1).getDay();
 }
 
-// Store all events in memory for demo (refresh loses data)
-let allEvents = [];
+
+let allEvents = []; //Change in the future to store in database, at the moment refreshing the page loses data
 
 let currentDate = new Date();
-let todayHighlightFlag = false; // Track if we should highlight today
+let todayHighlightFlag = false;
 
 // DOM elements for calendar navigation
 const navDateElement = document.querySelector('.nav__date');
@@ -28,15 +28,15 @@ const rightArrow = document.querySelectorAll('.nav__arrows button')[1];
 const calendarDayList = document.querySelector('.month-calendar__day-list');
 const todayButton = document.querySelector('.nav__controls .button--secondary');
 
-// Add view state tracking
+// Current view
 let currentView = 'month'; // can be 'month', 'week', or 'day'
 let selectedDate = new Date();
 
-// Add view switching function
+// Switching Views function
 function switchView(newView, date) {
   currentView = newView;
   selectedDate = date;
-  
+
   // Hide all views first
   document.querySelector('.month-calendar').style.display = 'none';
   document.querySelector('[data-week-calendar]').style.display = 'none';
@@ -47,6 +47,7 @@ function switchView(newView, date) {
     document.querySelector('.month-calendar').style.display = '';
   } else if (newView === 'week') {
     document.querySelector('[data-week-calendar]').style.display = '';
+    //Update week view (not implemented yet)
   } else if (newView === 'day') {
     document.querySelector('[data-day-calendar]').style.display = '';
     // Update day view header
@@ -63,31 +64,33 @@ function switchView(newView, date) {
   updateNavDate();
 }
 
-// Add function to update day view
+// Function to scroll through days with left-right arrows on the header
 function updateDayView() {
   const dayHeader = document.querySelector('[data-day-calendar] .week-calendar__day-of-week-button');
   if (dayHeader) {
     const dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][selectedDate.getDay()];
     const dayNum = selectedDate.getDate();
-    
+
     const dayText = dayHeader.querySelector('.week-calendar__day-of-week-day');
     const dayNumber = dayHeader.querySelector('.week-calendar__day-of-week-num');
-    
+
     if (dayText) dayText.textContent = dayOfWeek;
     if (dayNumber) dayNumber.textContent = dayNum;
   }
 }
 
+//Update date on the header
 function updateNavDate() {
   if (currentView === 'month') {
     navDateElement.textContent = `${getMonthName(currentDate.getMonth())} ${currentDate.getFullYear()}`;
   } else if (currentView === 'week') {
-    // Add week view date logic if needed
+    // Week view nav (not implemented yet)
   } else if (currentView === 'day') {
     navDateElement.textContent = `${getMonthName(selectedDate.getMonth())} ${selectedDate.getDate()}, ${selectedDate.getFullYear()}`;
   }
 }
 
+//Build and display monthly calendar view
 function renderCalendar() {
 
   const year = currentDate.getFullYear();
@@ -100,8 +103,8 @@ function renderCalendar() {
   const todayDate = today.getDate();
 
 
+  //Update title on header
   navDateElement.textContent = `${getMonthName(month)} ${year}`;
-
 
   calendarDayList.innerHTML = "";
 
@@ -137,17 +140,18 @@ function renderCalendar() {
   for (let day = 1; day <= daysInMonth; day++) {
     const li = document.createElement('li');
     li.classList.add('month-calendar__day');
-    
+
     // Add hover effect for the entire cell
     li.classList.add('month-calendar__day--hoverable');
-    
+
     const btn = document.createElement('button');
     btn.className = 'month-calendar__day-label';
-    // Add specific hover effect for the date number
+
+    // Add different hover effect for day (not implemented yet)
     btn.classList.add('month-calendar__day-label--hoverable');
     btn.textContent = day;
 
-    // Add styles to document head for hover effects and event positioning
+    // Added styles
     const styleSheet = document.createElement("style");
     styleSheet.textContent = `
       .month-calendar__day--hoverable:hover {
@@ -225,12 +229,12 @@ function renderCalendar() {
     }
 
     btn.addEventListener('click', (e) => {
-      e.stopPropagation(); // Prevent event from bubbling to li
+      e.stopPropagation(); // Prevent other buttons to be clicked
       const clickedDate = new Date(year, month, day);
       switchView('day', clickedDate);
     });
 
-    // Add click handler to the li element (day cell)
+    // Clickable days
     li.addEventListener('click', () => {
       // Set modal date input value
       date.value = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -244,12 +248,13 @@ function renderCalendar() {
       toggleAllDay();
       toggleRepeat();
 
-      // Set default event type
+      // typeEvent = event by default
       typeEvent = 'event';
 
-      // Show modal
       modal.style.display = 'block';
     });
+
+    //Build cell for monthly view
 
     li.appendChild(btn);
 
@@ -263,7 +268,7 @@ function renderCalendar() {
     // Add events for this day
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     const todaysEvents = allEvents.filter(e => e.selectedDate === dateStr);
-    
+
     // Sort events by time
     todaysEvents.sort((a, b) => {
       if (a.isAllDay && !b.isAllDay) return -1;
@@ -275,13 +280,13 @@ function renderCalendar() {
     todaysEvents.forEach(ev => {
       const eventItem = document.createElement("li");
       eventItem.classList.add("event-item");
-      
-      // Add event type class for different colors
+
       eventItem.classList.add(`event-item--${ev.typeEvent}`);
-      
-      // Just show the title without time
+
+      // Show title on event bar
       eventItem.textContent = ev.title;
 
+      //Alert with event details when event bar is clicked
       eventItem.addEventListener("click", (e) => {
         e.stopPropagation();
         alert(`Title: ${ev.title}
@@ -297,7 +302,7 @@ Type: ${ev.typeEvent}`);
     calendarDayList.appendChild(li);
   }
 
-  // Add next month's leading days to fill the grid (always show 6 weeks for consistency)
+  // Add next month's leading days to fill the grid
   const totalCells = 42; // 7 days x 6 weeks
   const currentCells = firstDayOfWeek + daysInMonth;
   for (let i = 1; i <= totalCells - currentCells; i++) {
@@ -320,7 +325,7 @@ Type: ${ev.typeEvent}`);
   }
 }
 
-// Update navigation arrows to work with daily view
+// left-right arrows on the header
 leftArrow.addEventListener('click', () => {
   if (currentView === 'month') {
     currentDate.setMonth(currentDate.getMonth() - 1);
@@ -345,6 +350,7 @@ rightArrow.addEventListener('click', () => {
   }
 });
 
+//today button logic (highlights today on monthly view)
 if (todayButton) {
   todayButton.addEventListener('click', () => {
     currentDate = new Date();
@@ -361,12 +367,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+//initalize variables
 const modal = document.getElementById("addEventModal");
 const cancelModal = document.getElementById("cancelModal");
 const addEventButton = document.getElementById("addEventButton");
 const addTaskButton = document.getElementById("addTaskButton");
 const addReminderButton = document.getElementById("addReminderButton");
-const closeMain = document.querySelectorAll(".close-main")[0]; // The first close-main
+const closeMain = document.querySelectorAll(".close-main")[0];
 const submit = document.getElementById("submit");
 const yes = document.getElementById("yes");
 const no = document.getElementById("no");
@@ -392,6 +399,8 @@ errorMessage.textContent = "";
 const modalContent = document.querySelector(".modal-content");
 modalContent.appendChild(errorMessage);
 
+// Adding events/tasks/reminders
+//All popup the same modal, only typeEvent is different for each in the event details
 addEventButton.onclick = () => {
   modal.style.display = "block";
   errorMessage.style.display = "none";
@@ -408,10 +417,12 @@ addReminderButton.onclick = () => {
   typeEvent = "reminder";
 };
 
+//Show the modal "Are you sure you want to cancel" when X is clicked
 closeMain.onclick = () => {
   cancelModal.style.display = "block";
 };
 
+//Reset inputs when the modal is cancelled 
 yes.onclick = () => {
   cancelModal.style.display = "none";
   modal.style.display = "none";
@@ -421,6 +432,7 @@ no.onclick = () => {
   cancelModal.style.display = "none";
 };
 
+//Error handling inside "add event" modal
 submit.onclick = () => {
   const title = titleInput.value.trim();
   const time1Value = time1.value;
@@ -500,16 +512,18 @@ submit.onclick = () => {
     });
   }
 
-  document.querySelectorAll('input').forEach(input => input.value = ''); // Clear input fields
+  resetModalInputs(); // Clear input fields
   errorMessage.style.display = "none";
   modal.style.display = "none";
   showSuccessMessage();
-  renderCalendar(); // Update calendar to show new event
+  renderCalendar(); // Update calendar 
 
-  toggleAllDay();
+  //Turn off All Day and Repeat sliders
+  toggleAllDay(); 
   toggleRepeat();
 };
 
+//When mouse is clicked elsewhere on the screen (while add event modal is on) it closes the modal, but doesnt reset input fields
 window.onclick = (event) => {
   if (event.target === modal) {
     modal.style.display = "none";
@@ -520,6 +534,8 @@ window.onclick = (event) => {
   }
 };
 
+
+//Toggle Repeat slider
 sliderRepeat.addEventListener('click', function () {
   isRepeat = !isRepeat;
   sliderRepeat.style.backgroundColor = isRepeat ? "#4CAF50" : "#ccc";
@@ -533,14 +549,19 @@ sliderRepeat.addEventListener('click', function () {
     document.getElementById("repeatLabel").textContent = "Repeat:";
   }
 });
+
 repeatDateInput.addEventListener('click', function (event) {
   event.stopPropagation();
 });
+
+//Toggle ALl Day slider
 sliderAllDay.addEventListener('click', function () {
   isAllDay = !isAllDay;
   sliderAllDay.style.backgroundColor = isAllDay ? "#4CAF50" : "#ccc";
   sliderCircleAllDay.style.transform = isAllDay ? "translateX(14px)" : "translateX(0)";
 });
+
+//Turn off All Day and Repeat sliders seperately, resetModalInputs() doesn't do this on its own
 function toggleAllDay() {
   isAllDay = false;
   sliderAllDay.style.backgroundColor = isAllDay ? "#4CAF50" : "#ccc";
@@ -556,6 +577,8 @@ function toggleRepeat() {
   repeatDateInput.value = "";
   document.getElementById("repeatLabel").textContent = "Repeat:";
 }
+
+//Show "Changes Saved" snackbar at the bottom when event is added
 function showSuccessMessage() {
   const snackbar = document.getElementById("snackbar");
   snackbar.classList.add("show");
@@ -567,6 +590,7 @@ function showSuccessMessage() {
   });
 }
 
+//reset all input fields to blank, the sliders to off
 function resetModalInputs() {
   titleInput.value = '';
   time1.value = '';
@@ -584,7 +608,7 @@ if (viewSelect) {
   viewSelect.addEventListener('change', (e) => {
     switchView(e.target.value, selectedDate);
     if (e.target.value === 'month') {
-      renderCalendar(); // Re-render the month view when switching back
+      renderCalendar(); // render the month view again when switching back
     }
   });
 }

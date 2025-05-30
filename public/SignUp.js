@@ -1,3 +1,4 @@
+//initalize variables
 const form = document.querySelector('.form');
 const togglePassword = document.getElementById("togglePassword");
 const togglePasswordConfirm = document.getElementById("togglePasswordConfirm");
@@ -5,7 +6,7 @@ const passwordInput = document.getElementById("password");
 const passwordConfirmInput = document.getElementById("passwordConfirm");
 
 form.addEventListener('submit', function (event) {
-    event.preventDefault(); // always prevent default when using fetch
+    event.preventDefault(); // prevent auto submitting form, because fetch is used for Mongo database
 
     const firstName = document.getElementById("firstName").value.trim();
     const lastName = document.getElementById("lastName").value.trim();
@@ -19,7 +20,7 @@ form.addEventListener('submit', function (event) {
     errorElement.style.fontFamily = "Poppins, sans-serif";
     errorElement.textContent = "";
 
-    // Validation
+    // Error handling for user input
     if (!email.includes("@")) {
         errorElement.textContent = "Please enter a valid email";
         return;
@@ -33,7 +34,7 @@ form.addEventListener('submit', function (event) {
         return;
     }
 
-    // If validation passes, send data with fetch
+    // If valid, send data with fetch
     const userData = { firstName, lastName, email, password };
 
     fetch('/signup', {
@@ -43,8 +44,8 @@ form.addEventListener('submit', function (event) {
     })
     .then(response => {
         if (response.ok) {
-            // Redirect after successful signup
-            window.location.href = '/signin';  // adjust path to your sign-in page
+            // Redirect to sign in after successful signup
+            window.location.href = '/signin';
         } else {
             return response.text().then(text => {
                 errorElement.textContent = text || "Signup failed";
@@ -57,6 +58,7 @@ form.addEventListener('submit', function (event) {
     });
 });
 
+//Hide/show password for "enter password"
 togglePassword.addEventListener('click', function() {
     const icon = togglePassword.querySelector("i");
     const isPassword = passwordInput.type === "password";
@@ -65,6 +67,7 @@ togglePassword.addEventListener('click', function() {
     icon.classList.toggle("fa-eye-slash");
 });
 
+//Hide/show password for "confirm password"
 togglePasswordConfirm.addEventListener('click', function() {
     const icon = togglePasswordConfirm.querySelector("i");
     const isPasswordConfirm = passwordConfirmInput.type === "password";
