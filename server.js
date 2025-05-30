@@ -8,7 +8,10 @@ const mongoose = require("mongoose");
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})  
   .then(() => console.log("✅  MongoDB connection successful"))
   .catch(err => console.error("❌  MongoDB connection error:", err));
 
