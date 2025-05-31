@@ -528,7 +528,7 @@ window.onclick = (event) => {
   if (event.target === modal) {
     modal.style.display = "none";
     errorMessage.style.display = "none";
-    resetModalInputs();
+    //--
   } else if (event.target === cancelModal) {
     cancelModal.style.display = "none";
   }
