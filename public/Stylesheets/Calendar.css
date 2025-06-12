@@ -1,0 +1,88 @@
+@import "./nav.css";
+@import "./sidebar.css";
+@import "./button.css";
+@import "./reponsive.css";
+@import "./select.css";
+@import "./month-calendar.css";
+@import "./event.css";
+@import "./event-list.css";
+@import "./week-calendar.css";
+@import "./scroll.css";
+@import "./dialog.css";
+@import "./form.css";
+@import "./color-select.css";
+@import "./toaster.css";
+
+* {
+  font-family: poppins, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text--dark);
+}
+:root {
+  --font-size-sm: 0.875rem;
+  --font-size-xs: 0.75rem;
+  --font-size-lg: 1.125rem;
+  --font-size-2xl: 1.5rem;
+
+  --line-size-xs: 1rem;
+  --line-height-sm: 1.25rem;
+  --line-height-lg: 1.75rem;
+  --line-height-2xl: 2rem;
+
+  --border-radius-md: 0.25rem;
+
+  --duration-sm: 100ms;
+  --duration-md: 300ms;
+  --dueration-2xl: 3000ms;
+
+  --color-black: #000000;
+
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+
+  --color-red-600: #dc2626;
+
+  --color-green-600: #16a34a;
+
+  --color-white: #ffffff;
+  --color-text--dark: #000;
+  --color-gray-300: #d1d5db;
+  --color-gray-100: #f3f4f6;
+  --color-gray-400: #9ca3af;
+  --color-text-light: #f9fafb;
+  --color-gray-500: #6b7280;
+  --box-shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+.app {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  height: 100vh;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.calendar {
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .app {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+  .sidebar {
+    display: none;
+  }
+  .main {
+    padding: 0.5rem;
+  }
+}
