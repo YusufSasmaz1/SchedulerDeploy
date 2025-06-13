@@ -864,6 +864,30 @@ function renderWeeklyEvents() {
     for (let hour = 0; hour < 24; hour++) {
       const cell = document.createElement('div');
       cell.className = 'week-calendar__cell';
+      
+      // Add click handler to open modal with selected time
+      cell.addEventListener('click', () => {
+        const currentDate = new Date(weekStart);
+        currentDate.setDate(currentDate.getDate() + i);
+        const dateStr = formatDateString(currentDate);
+        const timeStr = `${String(hour).padStart(2, '0')}:00`;
+        
+        // Set the date and time in the modal
+        date.value = dateStr;
+        time1.value = timeStr;
+        time2.value = `${String(hour + 1).padStart(2, '0')}:00`;
+        
+        // Reset other fields
+        titleInput.value = '';
+        repeatDateInput.value = '';
+        errorMessage.style.display = 'none';
+        toggleAllDay();
+        toggleRepeat();
+        typeEvent = 'event';
+        
+        modal.style.display = 'block';
+      });
+      
       column.appendChild(cell);
     }
     
@@ -966,6 +990,28 @@ function renderDailyEvents() {
   for (let hour = 0; hour < 24; hour++) {
     const cell = document.createElement('div');
     cell.className = 'week-calendar__cell';
+    
+    // Add click handler to open modal with selected time
+    cell.addEventListener('click', () => {
+      const dateStr = formatDateString(selectedDate);
+      const timeStr = `${String(hour).padStart(2, '0')}:00`;
+      
+      // Set the date and time in the modal
+      date.value = dateStr;
+      time1.value = timeStr;
+      time2.value = `${String(hour + 1).padStart(2, '0')}:00`;
+      
+      // Reset other fields
+      titleInput.value = '';
+      repeatDateInput.value = '';
+      errorMessage.style.display = 'none';
+      toggleAllDay();
+      toggleRepeat();
+      typeEvent = 'event';
+      
+      modal.style.display = 'block';
+    });
+    
     column.appendChild(cell);
   }
 
