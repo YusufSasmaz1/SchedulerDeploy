@@ -1,5 +1,4 @@
-//initalize variables
-
+// Returns the month name for a given index
 function getMonthName(monthIndex) {
   return [
     "January", "February", "March", "April", "May", "June", "July",
@@ -7,15 +6,17 @@ function getMonthName(monthIndex) {
   ][monthIndex];
 }
 
+// Returns the number of days in a month
 function getDaysInMonth(year, month) {
   return new Date(year, month + 1, 0).getDate();
 }
 
+// Returns the day of the week for the first day of a month
 function getFirstDayOfWeek(year, month) {
   return new Date(year, month, 1).getDay();
 }
 
-// Get userId from localStorage (set during login)
+// Gets the userId from localStorage
 const userId = localStorage.getItem('userId');
 let allEvents = []; // Will be populated from server
 
@@ -29,11 +30,11 @@ const rightArrow = document.querySelectorAll('.nav__arrows button')[1];
 const calendarDayList = document.querySelector('.month-calendar__day-list');
 const todayButton = document.querySelector('.nav__controls .button--secondary');
 
-// Current view
+// Tracks the current view (month, week, or day)
 let currentView = 'month'; // can be 'month', 'week', or 'day'
 let selectedDate = new Date();
 
-// Helper function to ensure consistent date formatting
+// Formats a date as YYYY-MM-DD
 function formatDateString(date) {
   const d = new Date(date);
   const year = d.getFullYear();
@@ -42,7 +43,7 @@ function formatDateString(date) {
   return `${year}-${month}-${day}`;
 }
 
-// Switching Views function
+// Switches between month, week, and day views
 function switchView(newView, date) {
   currentView = newView;
   
@@ -77,7 +78,7 @@ function switchView(newView, date) {
   updateNavDate();
 }
 
-// Function to scroll through days with left-right arrows on the header
+// Updates the day view header
 function updateDayView() {
   const dayHeader = document.querySelector('[data-day-calendar] .week-calendar__day-of-week-button');
   if (dayHeader) {
@@ -92,7 +93,7 @@ function updateDayView() {
   }
 }
 
-//Update date on the header
+// Updates the navigation date display
 function updateNavDate() {
   if (currentView === 'month') {
     navDateElement.textContent = `${getMonthName(currentDate.getMonth())} ${currentDate.getFullYear()}`;
@@ -112,7 +113,7 @@ function updateNavDate() {
   }
 }
 
-// Helper function to format a date as YYYY-MM-DD
+// Formats a date as YYYY-MM-DD
 function formatDate(date) {
   const d = new Date(date);
   const year = d.getFullYear();
@@ -121,17 +122,16 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
-// Helper function to parse a date string and get a Date object in local timezone
+// Parses a date string and returns a Date object
 function parseDate(dateString) {
   const [year, month, day] = dateString.split('-').map(Number);
   const date = new Date(year, month - 1, day);
   return date;
 }
 
-// Add this CSS class definition at the top of the file
 const MAX_EVENTS_PER_CELL = 3; // Maximum number of events to show before using "+X more"
 
-//Build and display monthly calendar view
+// Renders the month calendar view
 function renderCalendar() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -167,9 +167,8 @@ function renderCalendar() {
     btn.classList.add('month-calendar__day-label--hoverable');
     btn.textContent = day;
 
-    // Highlight today if on current month/year and flag is set
+    // Always highlight today if it matches
     if (
-      todayHighlightFlag &&
       year === today.getFullYear() &&
       month === today.getMonth() &&
       day === today.getDate()
@@ -254,11 +253,9 @@ function renderCalendar() {
 
       eventItem.addEventListener('click', (e) => {
         e.stopPropagation();
-        alert(`Title: ${ev.title}
-Date: ${ev.selectedDate}
-${ev.isAllDay ? "All Day" : `Time: ${ev.time1Value} to ${ev.time2Value}`}
-${ev.isRepeat ? "Repeats until: " + ev.repeatDate : "Does not repeat"}
-Type: ${ev.typeEvent}`);
+        // Store event id for deletion
+        window.eventToDelete = ev;
+        document.getElementById('deleteEventModal').style.display = 'block';
       });
 
       eventList.appendChild(eventItem);
@@ -299,63 +296,46 @@ Type: ${ev.typeEvent}`);
 
 // Helper function to add a day to the calendar
 function addCalendarDay(dateStr, isInactive) {
-  const date = parseDate(dateStr);
-  const day = date.getDate();
-  
   const li = document.createElement('li');
   li.classList.add('month-calendar__day');
   if (isInactive) {
     li.classList.add('month-calendar__day--inactive');
-  } else {
-    li.classList.add('month-calendar__day--hoverable');
   }
 
   const btn = document.createElement('button');
   btn.className = 'month-calendar__day-label';
-  if (!isInactive) {
-    btn.classList.add('month-calendar__day-label--hoverable');
-  }
-  btn.textContent = day;
-  
-  if (!isInactive) {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const clickedDate = parseDate(dateStr);
-      switchView('day', clickedDate);
-    });
+  btn.textContent = new Date(dateStr).getDate();
 
-    li.addEventListener('click', () => {
-      date.value = dateStr;
-      titleInput.value = '';
-      time1.value = '';
-      time2.value = '';
-      repeatDateInput.value = '';
-      errorMessage.style.display = 'none';
-      toggleAllDay();
-      toggleRepeat();
-      typeEvent = 'event';
-      modal.style.display = 'block';
-    });
-  } else {
-    btn.disabled = true;
-  }
+  // Day number click switches to day view
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    switchView('day', new Date(dateStr));
+  });
 
-  // Check if this is today
-  const today = new Date();
-  if (
-    todayHighlightFlag &&
-    today.getFullYear() === date.getFullYear() &&
-    today.getMonth() === date.getMonth() &&
-    today.getDate() === date.getDate()
-  ) {
-    btn.classList.add('today-highlight');
-  }
+  // Cell click opens add event modal
+  li.addEventListener('click', () => {
+    // Set the date in the modal
+    date.value = dateStr;
+    
+    // Reset other fields
+    titleInput.value = '';
+    time1.value = '';
+    time2.value = '';
+    repeatDateInput.value = '';
+    errorMessage.style.display = 'none';
+    toggleAllDay();
+    toggleRepeat();
+    typeEvent = 'event';
+    eventTypeSelect.value = 'event';
+    
+    modal.style.display = 'block';
+  });
 
   li.appendChild(btn);
 
   const eventListWrapper = document.createElement('div');
   eventListWrapper.className = 'month-calendar__event-list-wrapper';
-  eventListWrapper.style.maxHeight = 'calc(100% - 25px)'; // Leave space for the day number
+  eventListWrapper.style.maxHeight = 'calc(100% - 25px)';
   eventListWrapper.style.overflow = 'hidden';
   
   const eventList = document.createElement('ul');
@@ -363,6 +343,8 @@ function addCalendarDay(dateStr, isInactive) {
 
   // Add events for this day
   const todaysEvents = allEvents.filter(e => e.selectedDate === dateStr);
+
+  // Sort events by time
   todaysEvents.sort((a, b) => {
     if (a.isAllDay && !b.isAllDay) return -1;
     if (!a.isAllDay && b.isAllDay) return 1;
@@ -376,10 +358,8 @@ function addCalendarDay(dateStr, isInactive) {
 
   visibleEvents.forEach(ev => {
     const eventItem = document.createElement('li');
-    eventItem.className = 'event-item';
-    eventItem.classList.add(`event-item--${ev.typeEvent}`);
+    eventItem.className = `event-item event-item--${ev.typeEvent || 'event'}`;
     
-    // Create a container for the event content
     const eventContent = document.createElement('div');
     eventContent.className = 'event-item__content';
     eventContent.style.overflow = 'hidden';
@@ -388,33 +368,22 @@ function addCalendarDay(dateStr, isInactive) {
     eventContent.textContent = ev.title;
     
     eventItem.appendChild(eventContent);
-
+    
     eventItem.addEventListener('click', (e) => {
-      e.stopPropagation();
-      alert(`Title: ${ev.title}
-Date: ${ev.selectedDate}
-${ev.isAllDay ? "All Day" : `Time: ${ev.time1Value} to ${ev.time2Value}`}
-${ev.isRepeat ? "Repeats until: " + ev.repeatDate : "Does not repeat"}
-Type: ${ev.typeEvent}`);
+      e.stopPropagation(); // Prevent event from bubbling up
+      // Store event id for deletion
+      window.eventToDelete = ev;
+      document.getElementById('deleteEventModal').style.display = 'block';
     });
-
+    
     eventList.appendChild(eventItem);
   });
 
-  // Add "+X more" indicator if there are additional events
   if (remainingEvents > 0) {
-    const moreEventsItem = document.createElement('li');
-    moreEventsItem.className = 'event-item event-item--more';
-    moreEventsItem.textContent = `+${remainingEvents} more`;
-    
-    // Add click handler to show all events for this day
-    moreEventsItem.addEventListener('click', (e) => {
-      e.stopPropagation();
-      // Switch to day view when clicking "+X more"
-      switchView('day', dateStr);
-    });
-    
-    eventList.appendChild(moreEventsItem);
+    const moreItem = document.createElement('li');
+    moreItem.className = 'event-item event-item--more';
+    moreItem.textContent = `+${remainingEvents} more`;
+    eventList.appendChild(moreItem);
   }
 
   eventListWrapper.appendChild(eventList);
@@ -422,47 +391,54 @@ Type: ${ev.typeEvent}`);
   calendarDayList.appendChild(li);
 }
 
-// left-right arrows on the header
+// View selector event listener
+document.querySelector('[data-view-select]').addEventListener('change', (e) => {
+  const newView = e.target.value;
+  if (newView === currentView) return; // Don't do anything if the view hasn't changed
+  
+  // Store the current date before switching views
+  const currentDateToUse = currentView === 'month' ? currentDate : selectedDate;
+  
+  // Switch to the new view
+  switchView(newView, currentDateToUse);
+});
+
+// Add event listeners for arrow buttons
 leftArrow.addEventListener('click', () => {
   if (currentView === 'month') {
     currentDate.setMonth(currentDate.getMonth() - 1);
-    todayHighlightFlag = false;
     renderCalendar();
   } else if (currentView === 'week') {
     selectedDate.setDate(selectedDate.getDate() - 7);
     renderWeeklyEvents();
-    updateNavDate();
   } else if (currentView === 'day') {
     selectedDate.setDate(selectedDate.getDate() - 1);
     updateDayView();
     renderDailyEvents();
-    updateNavDate();
   }
+  updateNavDate();
 });
 
 rightArrow.addEventListener('click', () => {
   if (currentView === 'month') {
     currentDate.setMonth(currentDate.getMonth() + 1);
-    todayHighlightFlag = false;
     renderCalendar();
   } else if (currentView === 'week') {
     selectedDate.setDate(selectedDate.getDate() + 7);
     renderWeeklyEvents();
-    updateNavDate();
   } else if (currentView === 'day') {
     selectedDate.setDate(selectedDate.getDate() + 1);
     updateDayView();
     renderDailyEvents();
-    updateNavDate();
   }
+  updateNavDate();
 });
 
-//today button logic (highlights today on monthly view)
+//today button logic (no longer needs to set highlight flag)
 if (todayButton) {
   todayButton.addEventListener('click', () => {
     currentDate = new Date();
     selectedDate = new Date();
-    todayHighlightFlag = true;
     switchView(currentView, currentDate);
     renderCalendar();
   });
@@ -642,9 +618,11 @@ window.onclick = (event) => {
   if (event.target === modal) {
     modal.style.display = "none";
     errorMessage.style.display = "none";
-    //--
   } else if (event.target === cancelModal) {
     cancelModal.style.display = "none";
+  } else if (event.target === deleteEventModal) {
+    deleteEventModal.style.display = "none";
+    window.eventToDelete = null;
   }
 };
 
@@ -712,6 +690,8 @@ function resetModalInputs() {
   date.value = '';
   repeatDateInput.value = '';
   errorMessage.style.display = 'none';
+  eventTypeSelect.value = 'event'; // Reset to default event type
+  typeEvent = 'event';
   toggleAllDay();
   toggleRepeat();
 }
@@ -795,9 +775,12 @@ function renderEvent(event, column, overlappingEvents, eventIndex) {
   const duration = endPercent - startPercent;
 
   const eventEl = document.createElement('div');
-  eventEl.className = 'event event--dynamic';
+  eventEl.className = `event event--dynamic event-item--${event.typeEvent || 'event'}`;
   eventEl.style.top = `${startPercent}%`;
-  eventEl.style.height = `${duration}%`;
+  
+  // Set minimum height for very short events
+  const minHeight = 2; // Minimum height in percentage
+  eventEl.style.height = `${Math.max(duration, minHeight)}%`;
   
   // Calculate width and position based on number of overlapping events
   const totalEvents = overlappingEvents.length;
@@ -813,15 +796,19 @@ function renderEvent(event, column, overlappingEvents, eventIndex) {
   time.className = 'event__time';
   time.textContent = `${event.time1Value} - ${event.time2Value}`;
   
+  // Add a special class for very short events
+  if (duration < minHeight) {
+    eventEl.classList.add('event--short');
+  }
+  
   eventEl.appendChild(title);
   eventEl.appendChild(time);
 
-  eventEl.addEventListener('click', () => {
-    alert(`Title: ${event.title}
-Date: ${event.selectedDate}
-Time: ${event.time1Value} to ${event.time2Value}
-${event.isRepeat ? "Repeats until: " + event.repeatDate : "Does not repeat"}
-Type: ${event.typeEvent}`);
+  eventEl.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevent event from bubbling up
+    // Store event id for deletion
+    window.eventToDelete = event;
+    document.getElementById('deleteEventModal').style.display = 'block';
   });
   
   column.appendChild(eventEl);
@@ -831,17 +818,26 @@ Type: ${event.typeEvent}`);
 function renderWeeklyEvents() {
   const weekStart = new Date(selectedDate);
   weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-  weekStart.setHours(0, 0, 0, 0); // Normalize to midnight
-
-  // Update week header dates
-  const dayButtons = document.querySelectorAll('.week-calendar__day-of-week-button');
-  const currentDay = new Date(weekStart);
-  dayButtons.forEach(button => {
-    const dayText = button.querySelector('.week-calendar__day-of-week-day');
-    const dayNum = button.querySelector('.week-calendar__day-of-week-num');
-    dayText.textContent = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][currentDay.getDay()];
-    dayNum.textContent = currentDay.getDate();
-    currentDay.setDate(currentDay.getDate() + 1);
+  
+  // Update the week header dates
+  const dayHeaders = document.querySelectorAll('[data-week-calendar] .week-calendar__day-of-week-button');
+  dayHeaders.forEach((header, index) => {
+    const currentDate = new Date(weekStart);
+    currentDate.setDate(weekStart.getDate() + index);
+    
+    const dayText = header.querySelector('.week-calendar__day-of-week-day');
+    const dayNumber = header.querySelector('.week-calendar__day-of-week-num');
+    
+    if (dayText) dayText.textContent = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][currentDate.getDay()];
+    if (dayNumber) dayNumber.textContent = currentDate.getDate();
+    
+    // Add click event listener to switch to daily view
+    header.addEventListener('click', () => {
+      switchView('day', currentDate);
+    });
+    
+    // Add cursor pointer style
+    header.style.cursor = 'pointer';
   });
 
   // Clear existing events
@@ -902,7 +898,7 @@ function renderWeeklyEvents() {
     document.querySelector('.week-calendar__content-inner').appendChild(columnsContainer);
   }
 
-  // Render events
+  // Get events for the week
   const weekEnd = new Date(weekStart);
   weekEnd.setDate(weekEnd.getDate() + 7);
 
@@ -932,8 +928,22 @@ function renderWeeklyEvents() {
     if (allDayList) {
       const eventList = allDayList.querySelector('.event-list');
       events.forEach(event => {
-        const eventEl = createEventElement(event);
-        eventEl.classList.add('event-item--all-day');
+        const eventEl = document.createElement('div');
+        eventEl.className = `event-item event-item--${event.typeEvent || 'event'}`;
+        
+        const content = document.createElement('div');
+        content.className = 'event-item__content';
+        content.textContent = event.title;
+        
+        eventEl.appendChild(content);
+        
+        eventEl.addEventListener('click', (e) => {
+          e.stopPropagation(); // Prevent event from bubbling up
+          // Store event id for deletion
+          window.eventToDelete = event;
+          document.getElementById('deleteEventModal').style.display = 'block';
+        });
+        
         eventList.appendChild(eventEl);
       });
     }
@@ -980,9 +990,14 @@ function renderDailyEvents() {
   document.querySelectorAll('.week-calendar--day .event-list').forEach(list => {
     list.innerHTML = '';
   });
-  document.querySelector('.week-calendar--day .week-calendar__columns').innerHTML = '';
+  document.querySelectorAll('.week-calendar--day .week-calendar__columns').forEach(col => {
+    col.innerHTML = '';
+  });
 
-  // Create column for the day
+  // Create columns for the day
+  const columnsContainer = document.createElement('div');
+  columnsContainer.className = 'week-calendar__columns';
+  
   const column = document.createElement('div');
   column.className = 'week-calendar__coloumn';
   
@@ -1014,12 +1029,10 @@ function renderDailyEvents() {
     
     column.appendChild(cell);
   }
-
-  const columnsContainer = document.createElement('div');
-  columnsContainer.className = 'week-calendar__columns';
+  
   columnsContainer.appendChild(column);
 
-  // Replace existing columns
+  // Find the existing columns container and replace it
   const existingColumns = document.querySelector('.week-calendar--day .week-calendar__columns');
   if (existingColumns) {
     existingColumns.replaceWith(columnsContainer);
@@ -1027,99 +1040,63 @@ function renderDailyEvents() {
     document.querySelector('.week-calendar--day .week-calendar__content-inner').appendChild(columnsContainer);
   }
 
-  // Format the selected date for comparison
-  const year = selectedDate.getFullYear();
-  const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
-  const day = String(selectedDate.getDate()).padStart(2, '0');
-  const dateStr = `${year}-${month}-${day}`;
+  // Get all events for the selected date
+  const dateStr = formatDateString(selectedDate);
+  const dayEvents = allEvents.filter(event => event.selectedDate === dateStr);
 
-  // Filter events for the selected date
-  const dayEvents = [];
-  const allDayEvents = [];
-
-  allEvents.forEach(event => {
-    if (event.selectedDate === dateStr) {
-      if (event.isAllDay) {
-        allDayEvents.push(event);
-      } else {
-        dayEvents.push(event);
-      }
-    }
-  });
+  // Separate all-day events and time-specific events
+  const allDayEvents = dayEvents.filter(event => event.isAllDay);
+  const timeEvents = dayEvents.filter(event => !event.isAllDay);
 
   // Render all-day events
   const allDayList = document.querySelector('.week-calendar--day .week-calendar__all-day-list-item .event-list');
   if (allDayList) {
     allDayEvents.forEach(event => {
-      const eventEl = document.createElement('li');
-      eventEl.className = 'event-item event-item--all-day';
-      eventEl.textContent = event.title;
+      const eventEl = document.createElement('div');
+      eventEl.className = `event-item event-item--${event.typeEvent || 'event'}`;
+      
+      const content = document.createElement('div');
+      content.className = 'event-item__content';
+      content.textContent = event.title;
+      
+      eventEl.appendChild(content);
+      
       eventEl.addEventListener('click', (e) => {
-        e.stopPropagation();
-        alert(`Title: ${event.title}
-Date: ${event.selectedDate}
-All Day Event
-${event.isRepeat ? "Repeats until: " + event.repeatDate : "Does not repeat"}
-Type: ${event.typeEvent}`);
+        e.stopPropagation(); // Prevent event from bubbling up
+        // Store event id for deletion
+        window.eventToDelete = event;
+        document.getElementById('deleteEventModal').style.display = 'block';
       });
+      
       allDayList.appendChild(eventEl);
     });
   }
 
   // Sort time-specific events by start time
-  dayEvents.sort((a, b) => a.time1Value.localeCompare(b.time1Value));
+  timeEvents.sort((a, b) => {
+    const timeA = a.time1Value || '00:00';
+    const timeB = b.time1Value || '00:00';
+    return timeA.localeCompare(timeB);
+  });
 
-  // Find overlapping event groups
+  // Find all overlapping event groups
   const processedEvents = new Set();
   
-  dayEvents.forEach(event => {
+  timeEvents.forEach(event => {
     if (processedEvents.has(event)) return;
     
-    const overlappingEvents = findOverlappingEvents(event, dayEvents);
+    const overlappingEvents = findOverlappingEvents(event, timeEvents);
     
     // Sort overlapping events by start time
-    overlappingEvents.sort((a, b) => a.time1Value.localeCompare(b.time1Value));
+    overlappingEvents.sort((a, b) => {
+      const timeA = a.time1Value || '00:00';
+      const timeB = b.time1Value || '00:00';
+      return timeA.localeCompare(timeB);
+    });
     
     // Render each event in the group
     overlappingEvents.forEach((evt, index) => {
-      const [startHour, startMinute] = evt.time1Value.split(':').map(Number);
-      const [endHour, endMinute] = evt.time2Value.split(':').map(Number);
-      
-      const startPercent = (startHour + startMinute / 60) * (100 / 24);
-      const endPercent = (endHour + endMinute / 60) * (100 / 24);
-      const duration = endPercent - startPercent;
-
-      const eventEl = document.createElement('div');
-      eventEl.className = 'event event--dynamic';
-      eventEl.style.top = `${startPercent}%`;
-      eventEl.style.height = `${duration}%`;
-      
-      // Calculate width and position based on number of overlapping events
-      const totalEvents = overlappingEvents.length;
-      const width = 85 / totalEvents; // 85% total width to leave some space
-      eventEl.style.width = `${width}%`;
-      eventEl.style.left = `${(index * width + 7.5)}%`; // 7.5% left margin
-      
-      const title = document.createElement('span');
-      title.className = 'event__title';
-      title.textContent = evt.title;
-      
-      const time = document.createElement('span');
-      time.className = 'event__time';
-      time.textContent = `${evt.time1Value} - ${evt.time2Value}`;
-      
-      eventEl.appendChild(title);
-      eventEl.appendChild(time);
-
-      eventEl.addEventListener('click', () => {
-        alert(`Title: ${evt.title}
-Date: ${evt.selectedDate}
-Time: ${evt.time1Value} to ${evt.time2Value}
-${evt.isRepeat ? "Repeats until: " + evt.repeatDate : "Does not repeat"}
-Type: ${evt.typeEvent}`);
-      });
-      
-      column.appendChild(eventEl);
+      renderEvent(evt, column, overlappingEvents, index);
       processedEvents.add(evt);
     });
   });
@@ -1127,17 +1104,49 @@ Type: ${evt.typeEvent}`);
 
 // Helper function to create event elements
 function createEventElement(event) {
-  const li = document.createElement('li');
-  li.className = 'event-item';
-  li.textContent = event.title;
-  li.addEventListener('click', () => {
-    alert(`Title: ${event.title}
-Date: ${event.selectedDate}
-${event.isAllDay ? "All Day" : `Time: ${event.time1Value} to ${event.time2Value}`}
-${event.isRepeat ? "Repeats until: " + event.repeatDate : "Does not repeat"}
-Type: ${event.typeEvent}`);
+  const eventEl = document.createElement('div');
+  eventEl.className = `event-item event-item--${event.typeEvent || 'event'}`;
+  
+  const content = document.createElement('div');
+  content.className = 'event-item__content';
+  content.textContent = event.title;
+  
+  eventEl.appendChild(content);
+  
+  eventEl.addEventListener('click', () => {
+    // Set the event details in the modal
+    titleInput.value = event.title;
+    date.value = event.selectedDate;
+    time1.value = event.time1Value;
+    time2.value = event.time2Value;
+    typeEvent = event.typeEvent || 'event';
+    eventTypeSelect.value = typeEvent;
+    
+    if (event.isAllDay) {
+      allDayCheckbox.checked = true;
+      time1.disabled = true;
+      time2.disabled = true;
+    } else {
+      allDayCheckbox.checked = false;
+      time1.disabled = false;
+      time2.disabled = false;
+    }
+    
+    if (event.isRepeat) {
+      repeatCheckbox.checked = true;
+      repeatDateInput.style.display = 'block';
+      repeatDateInput.value = event.repeatDate;
+    } else {
+      repeatCheckbox.checked = false;
+      repeatDateInput.style.display = 'none';
+      repeatDateInput.value = '';
+    }
+    
+    errorMessage.style.display = 'none';
+    modal.style.display = 'block';
   });
-  return li;
+  
+  return eventEl;
 }
 
 // Update saveEvent function to handle dates properly
@@ -1207,6 +1216,103 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// Add debounce mechanism for keyboard navigation
+let lastKeyPressTime = 0;
+const DEBOUNCE_DELAY = 150; // milliseconds between allowed key presses
+
+// Add keyboard navigation
+document.addEventListener('keydown', (e) => {
+  const currentTime = Date.now();
+  if (currentTime - lastKeyPressTime < DEBOUNCE_DELAY) {
+    return; // Ignore key press if it's too soon after the last one
+  }
+  
+  if (e.key === 'ArrowLeft') {
+    lastKeyPressTime = currentTime;
+    if (currentView === 'month') {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      renderCalendar();
+    } else if (currentView === 'week') {
+      selectedDate.setDate(selectedDate.getDate() - 7);
+      renderWeeklyEvents();
+    } else if (currentView === 'day') {
+      selectedDate.setDate(selectedDate.getDate() - 1);
+      updateDayView();
+      renderDailyEvents();
+    }
+    updateNavDate();
+  } else if (e.key === 'ArrowRight') {
+    lastKeyPressTime = currentTime;
+    if (currentView === 'month') {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      renderCalendar();
+    } else if (currentView === 'week') {
+      selectedDate.setDate(selectedDate.getDate() + 7);
+      renderWeeklyEvents();
+    } else if (currentView === 'day') {
+      selectedDate.setDate(selectedDate.getDate() + 1);
+      updateDayView();
+      renderDailyEvents();
+    }
+    updateNavDate();
+  }
+});
+
+// Add event type selector to the modal
+const eventTypeSelect = document.createElement('select');
+eventTypeSelect.className = 'modal__input';
+eventTypeSelect.id = 'eventType';
+
+// Add options for event types
+const eventTypes = [
+  { value: 'event', label: 'Event' },
+  { value: 'task', label: 'Task' },
+  { value: 'reminder', label: 'Reminder' }
+];
+
+eventTypes.forEach(type => {
+  const option = document.createElement('option');
+  option.value = type.value;
+  option.textContent = type.label;
+  eventTypeSelect.appendChild(option);
+});
+
+// Insert the select element after the title input
+titleInput.parentNode.insertBefore(eventTypeSelect, titleInput.nextSibling);
+
+// Update the event type when selection changes
+eventTypeSelect.addEventListener('change', (e) => {
+  typeEvent = e.target.value;
+});
+
+// Add event listeners for delete confirmation modal
+const deleteEventModal = document.getElementById('deleteEventModal');
+const deleteYes = document.getElementById('deleteYes');
+const deleteNo = document.getElementById('deleteNo');
+deleteYes.onclick = async () => {
+  if (window.eventToDelete && window.eventToDelete._id) {
+    try {
+      const response = await fetch(`/api/events/${window.eventToDelete._id}`, { method: 'DELETE' });
+      if (response.ok) {
+        // Remove from allEvents and re-render
+        const idx = allEvents.findIndex(ev => ev._id === window.eventToDelete._id);
+        if (idx !== -1) allEvents.splice(idx, 1);
+        renderCalendar();
+        renderWeeklyEvents && renderWeeklyEvents();
+        renderDailyEvents && renderDailyEvents();
+      }
+    } catch (err) {
+      console.error('Error deleting event:', err);
+    }
+  }
+  deleteEventModal.style.display = 'none';
+  window.eventToDelete = null;
+};
+deleteNo.onclick = () => {
+  deleteEventModal.style.display = 'none';
+  window.eventToDelete = null;
+};
 
 
 

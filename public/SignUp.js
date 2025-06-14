@@ -5,22 +5,20 @@ const togglePasswordConfirm = document.getElementById("togglePasswordConfirm");
 const passwordInput = document.getElementById("password");
 const passwordConfirmInput = document.getElementById("passwordConfirm");
 
+// Form submission for sign up
 form.addEventListener('submit', function (event) {
-    event.preventDefault(); // prevent auto submitting form, because fetch is used for Mongo database
-
+    event.preventDefault();
     const firstName = document.getElementById("firstName").value.trim();
     const lastName = document.getElementById("lastName").value.trim();
     const email = document.getElementById("email").value.trim();
     const password = passwordInput.value;
     const cpassword = passwordConfirmInput.value;
-
     const errorElement = document.getElementById("errorPassword");
     errorElement.style.color = "red";
     errorElement.style.fontSize = "14px";
     errorElement.style.fontFamily = "Poppins, sans-serif";
     errorElement.textContent = "";
-
-    // Error handling for user input
+    // Email and password validation
     if (!email.includes("@")) {
         errorElement.textContent = "Please enter a valid email";
         return;
@@ -33,10 +31,8 @@ form.addEventListener('submit', function (event) {
         errorElement.textContent = "Minimum 8 character password";
         return;
     }
-
-    // If valid, send data with fetch
+    // Send user data to server
     const userData = { firstName, lastName, email, password };
-
     fetch('/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -44,7 +40,6 @@ form.addEventListener('submit', function (event) {
     })
     .then(response => {
         if (response.ok) {
-            // Redirect to sign in after successful signup
             window.location.href = '/signin';
         } else {
             return response.text().then(text => {
@@ -52,13 +47,12 @@ form.addEventListener('submit', function (event) {
             });
         }
     })
-    .catch(err => {
+    .catch(() => {
         errorElement.textContent = "Network error, please try again";
-        console.error("Signup error:", err);
     });
 });
 
-//Hide/show password for "enter password"
+// Toggle password visibility
 togglePassword.addEventListener('click', function() {
     const icon = togglePassword.querySelector("i");
     const isPassword = passwordInput.type === "password";
@@ -67,7 +61,7 @@ togglePassword.addEventListener('click', function() {
     icon.classList.toggle("fa-eye-slash");
 });
 
-//Hide/show password for "confirm password"
+// Toggle confirm password visibility
 togglePasswordConfirm.addEventListener('click', function() {
     const icon = togglePasswordConfirm.querySelector("i");
     const isPasswordConfirm = passwordConfirmInput.type === "password";

@@ -5,7 +5,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
     year: "numeric",
 });
 
-
+// Navigation bar setup
 export function initNav(){
     const todayButtonElements = document.querySelector('[data-nav-today-button]'); 
     const previousButtonElements = document.querySelector('[data-nav-previous-button]'); 
@@ -15,6 +15,7 @@ export function initNav(){
     let selectedView = "month";
     let selectedDate = today();
 
+    // Navigation button click events
     for (const todayButtonElement of todayButtonElements) {
         todayButtonElement.addEventListener('click', () => {
             todayButtonElement.dispatchEvent(new CustomEvent('date-change', {
@@ -43,22 +44,24 @@ export function initNav(){
         }));
     });
 
-
-document.addEventListener("view-change", (event) => {
-    selectedView = event.detail.view;
-});
-document.addEventListener("date-change", (event) => {
-    selectedDate = event.detail.date;
-    refreshDateElement(dayElements, selectedDate);
-});
+    // View and date change events
+    document.addEventListener("view-change", (event) => {
+        selectedView = event.detail.view;
+    });
+    document.addEventListener("date-change", (event) => {
+        selectedDate = event.detail.date;
+        refreshDateElement(dayElements, selectedDate);
+    });
 
     refreshDateElement(dayElements, selectedDate);
 }
 
+// Updates the date in the navigation bar
 function refreshDateElement(DateElement, selectedDate) {
     DateElement.textContent = dateFormatter.format(selectedDate);
 };
 
+// Gets previous date for current view
 function getPreviousDate(view, date) {
     if (view === "day") {
         return subtractDays(date, 1);
@@ -70,6 +73,7 @@ function getPreviousDate(view, date) {
         return subtractMonths(date, 1);
     }
 }
+// Gets next date for current view
 function getNextDate(view, date) {
     if (view === "day") {
         return addDays(date, 1);

@@ -5,7 +5,8 @@ import { initEventFormDialog } from './event-form-dialog.js';
 import { initNotification } from './notification.js';
 import { initEventStore } from './event-store.js';
 import {initNav} from "./nav.js";
-// add comment here
+
+// Initialize main features
 initViewSelect();
 initCalendar();
 initEventFormDialog();

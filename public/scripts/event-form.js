@@ -1,5 +1,10 @@
 import {validateEvent} from "./event.js"
 
+/**
+ * Initializes the event creation form with validation and submission handling
+ * @param {Object} toaster - The toaster instance for showing notifications
+ * @returns {Object} An object containing the form element and reset method
+ */
 export function initEventForm(toaster){
     const formElement = Document.querySelector('[data-event-form]');
 
@@ -21,6 +26,9 @@ export function initEventForm(toaster){
 
         return{
             formElement,
+        /**
+         * Resets the form to its initial state
+         */
         reset() {
             formElement.reset();
      }

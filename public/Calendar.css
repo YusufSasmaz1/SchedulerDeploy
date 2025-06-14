@@ -261,14 +261,38 @@ input[type="time"],
 }
 
 .today-highlight {
-  background: gray ;
-  color: #fff ;
+  border: 3px solid #4a90e2 !important;
+  color: #4a90e2 !important;
   font-weight: bold;
-  border-radius: 5%;
-
+  border-radius: 50%;
+  animation: todayHighlight 0.3s ease forwards;
+  box-shadow: 0 0 0 1px rgba(74, 144, 226, 0.2);
 }
 
+@keyframes todayHighlight {
+  0% {
+    border-color: transparent;
+    color: black;
+    box-shadow: none;
+  }
+  100% {
+    border-color: #4a90e2;
+    color: #4a90e2;
+    box-shadow: 0 0 0 1px rgba(74, 144, 226, 0.2);
+  }
+}
 
+.month-calendar__day--inactive {
+  opacity: 0.5;
+  cursor: default;
+  border: 1px solid var(--color-gray-300);
+}
+
+.month-calendar__day--inactive .month-calendar__day-label {
+  color: #444 !important;
+  opacity: 0.7;
+  cursor: default;
+}
 
 .month-calendar__day--inactive .month-calendar__day-label {
   background: none !important;
@@ -291,6 +315,7 @@ input[type="time"],
   list-style: none;
   border-bottom: 1px solid var(--color-gray-300);
   background: var(--color-white);
+  margin-left: 60px; /* Add margin instead of padding */
 }
 
 .week-calendar--day .week-calendar__day-of-week-list {
@@ -322,7 +347,7 @@ input[type="time"],
 
 .week-calendar__day-of-week-day {
   font-size: var(--font-size-sm);
-  color: var(--color-text--dark);
+  color: #444;
 }
 
 .week-calendar__day-of-week-num {
@@ -340,6 +365,7 @@ input[type="time"],
   max-height: 80px;
   overflow-y: auto;
   background: var(--color-white);
+  margin-left: 60px; /* Add margin instead of padding */
 }
 
 .week-calendar--day .week-calendar__all-day-list {
@@ -359,7 +385,7 @@ input[type="time"],
 
 .week-calendar__content-inner {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 60px 1fr;
   min-height: 1440px; /* 24 hours * 60px */
 }
 
@@ -381,7 +407,7 @@ input[type="time"],
 
 .week-calendar__time {
   font-size: var(--font-size-sm);
-  color: var(--color-text--dark);
+  color: #444;
   padding-right: 0.5rem;
 }
 
@@ -430,6 +456,29 @@ input[type="time"],
   z-index: 2;
 }
 
+/* Special styles for very short events */
+.week-calendar .event--short {
+  min-height: 20px !important;
+  padding: 1px 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--color-blue-600);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.week-calendar .event--short .event__title {
+  font-size: 10px;
+  line-height: 1.2;
+  margin-bottom: 0;
+}
+
+.week-calendar .event--short .event__time {
+  font-size: 9px;
+  line-height: 1;
+  opacity: 0.9;
+}
+
 .week-calendar .event:hover {
   opacity: 1;
 }
@@ -441,6 +490,7 @@ input[type="time"],
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  margin-bottom: 2px;
 }
 
 .week-calendar .event__time {
@@ -489,25 +539,6 @@ input[type="time"],
 .month-calendar__day-label--hoverable:hover {
   background-color: #f0f0f0;
   cursor: pointer;
-}
-
-.today-highlight {
-  background-color: #808080;
-  color: white;
-  font-weight: bold;
-  border-radius: 50%;
-  animation: todayHighlight 0.3s ease forwards;
-}
-
-@keyframes todayHighlight {
-  0% {
-    background-color: transparent;
-    color: black;
-  }
-  100% {
-    background-color: #808080;
-    color: white;
-  }
 }
 
 .month-calendar__event-list-wrapper {
@@ -592,7 +623,7 @@ input[type="time"],
 
 .week-calendar__day-of-week-day {
   font-size: var(--font-size-sm);
-  color: var(--color-text--dark);
+  color: #444;
 }
 
 .week-calendar__day-of-week-num {
@@ -649,7 +680,7 @@ input[type="time"],
 
 .week-calendar__time {
   font-size: var(--font-size-sm);
-  color: var(--color-text--dark);
+  color: #444;
   padding-right: 0.5rem;
 }
 
@@ -729,4 +760,235 @@ input[type="time"],
   .week-calendar .event {
     font-size: 0.75rem;
   }
+}
+
+.week-calendar__day-of-week:first-child {
+  border-left: 1px solid var(--color-gray-300);
+}
+
+.week-calendar__all-day-list-item:first-child {
+  border-left: 1px solid var(--color-gray-300);
+}
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-gray-300);
+  padding: 1rem;
+}
+
+.week-calendar__time-item:first-child {
+  border-top: 1px solid var(--color-gray-300);
+}
+
+.month-calendar--five-week .month-calendar__day:nth-child(n + 29) {
+  border-bottom: 1px solid var(--color-gray-300);
+}
+
+/* Event type colors for all views */
+.event-item--event,
+.event.event--dynamic.event-item--event {
+  background-color: #4a90e2; /* Blue for events */
+  border-left: 4px solid #357abd;
+}
+
+.event-item--task,
+.event.event--dynamic.event-item--task {
+  background-color: #50c878; /* Emerald green for tasks */
+  border-left: 4px solid #3da066;
+}
+
+.event-item--reminder,
+.event.event--dynamic.event-item--reminder {
+  background-color: #ffa500; /* Orange for reminders */
+  border-left: 4px solid #cc8400;
+}
+
+/* Hover states for each type */
+.event-item--event:hover,
+.event.event--dynamic.event-item--event:hover {
+  background-color: #357abd;
+}
+
+.event-item--task:hover,
+.event.event--dynamic.event-item--task:hover {
+  background-color: #3da066;
+}
+
+.event-item--reminder:hover,
+.event.event--dynamic.event-item--reminder:hover {
+  background-color: #cc8400;
+}
+
+/* Text color for better contrast */
+.event-item--event .event-item__content,
+.event-item--task .event-item__content,
+.event-item--reminder .event-item__content,
+.event.event--dynamic .event__title,
+.event.event--dynamic .event__time {
+  color: white;
+}
+
+/* Weekly and Daily view specific styles */
+.week-calendar__event,
+.day-calendar__event,
+.event.event--dynamic {
+  border-radius: 4px;
+  margin: 2px 0;
+  padding: 4px 8px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.week-calendar__event.event-item--event,
+.day-calendar__event.event-item--event {
+  background-color: #4a90e2;
+  border-left: 4px solid #357abd;
+}
+
+.week-calendar__event.event-item--task,
+.day-calendar__event.event-item--task {
+  background-color: #50c878;
+  border-left: 4px solid #3da066;
+}
+
+.week-calendar__event.event-item--reminder,
+.day-calendar__event.event-item--reminder {
+  background-color: #ffa500;
+  border-left: 4px solid #cc8400;
+}
+
+/* Hover states for weekly and daily views */
+.week-calendar__event.event-item--event:hover,
+.day-calendar__event.event-item--event:hover {
+  background-color: #357abd;
+}
+
+.week-calendar__event.event-item--task:hover,
+.day-calendar__event.event-item--task:hover {
+  background-color: #3da066;
+}
+
+.week-calendar__event.event-item--reminder:hover,
+.day-calendar__event.event-item--reminder:hover {
+  background-color: #cc8400;
+}
+
+/* Text color for weekly and daily views */
+.week-calendar__event .event-item__content,
+.day-calendar__event .event-item__content {
+  color: white;
+  font-weight: 500;
+}
+
+/* All-day events styling */
+.week-calendar__all-day-list .event-item,
+.week-calendar--day .week-calendar__all-day-list .event-item {
+  margin: 2px 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Event type colors for all views including all-day events */
+.event-item--event,
+.event.event--dynamic.event-item--event,
+.week-calendar__all-day-list .event-item--event {
+  background-color: #4a90e2; /* Blue for events */
+  border-left: 4px solid #357abd;
+}
+
+.event-item--task,
+.event.event--dynamic.event-item--task,
+.week-calendar__all-day-list .event-item--task {
+  background-color: #50c878; /* Emerald green for tasks */
+  border-left: 4px solid #3da066;
+}
+
+.event-item--reminder,
+.event.event--dynamic.event-item--reminder,
+.week-calendar__all-day-list .event-item--reminder {
+  background-color: #ffa500; /* Orange for reminders */
+  border-left: 4px solid #cc8400;
+}
+
+/* Hover states for each type including all-day events */
+.event-item--event:hover,
+.event.event--dynamic.event-item--event:hover,
+.week-calendar__all-day-list .event-item--event:hover {
+  background-color: #357abd;
+}
+
+.event-item--task:hover,
+.event.event--dynamic.event-item--task:hover,
+.week-calendar__all-day-list .event-item--task:hover {
+  background-color: #3da066;
+}
+
+.event-item--reminder:hover,
+.event.event--dynamic.event-item--reminder:hover,
+.week-calendar__all-day-list .event-item--reminder:hover {
+  background-color: #cc8400;
+}
+
+/* Text color for better contrast */
+.event-item--event .event-item__content,
+.event-item--task .event-item__content,
+.event-item--reminder .event-item__content,
+.event.event--dynamic .event__title,
+.event.event--dynamic .event__time,
+.week-calendar__all-day-list .event-item__content {
+  color: white;
+  font-weight: 500;
+}
+
+/* Add styles for delete confirmation modal buttons */
+#deleteEventModal .confirm {
+  padding: 8px 16px;
+  margin: 0 5px;
+}
+
+#deleteEventModal .confirm:hover {
+  background-color: var(--color-blue-500);
+}
+
+/* Sidebar button specific styles */
+#addEventButton {
+  background-color: #4a90e2 !important;
+  border-left: 4px solid #357abd !important;
+}
+
+#addEventButton:hover {
+  background-color: #357abd !important;
+}
+
+#addTaskButton {
+  background-color: #50c878 !important;
+  border-left: 4px solid #3da066 !important;
+}
+
+#addTaskButton:hover {
+  background-color: #3da066 !important;
+}
+
+#addReminderButton {
+  background-color: #ffa500 !important;
+  border-left: 4px solid #cc8400 !important;
+}
+
+#addReminderButton:hover {
+  background-color: #cc8400 !important;
+}
+
+/* Ensure text remains white for all buttons */
+#addEventButton,
+#addTaskButton,
+#addReminderButton {
+  color: white !important;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
 } 

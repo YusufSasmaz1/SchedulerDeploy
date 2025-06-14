@@ -31,7 +31,7 @@
     </div>
     <main class="main">
       <div class="nav">
-        <button class="button button--icon button--secondary mobile-only">
+        <button class="mobile-menu-button" id="mobileMenuButton">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="button__icon">
             <path d="M4 12h16" />
@@ -84,6 +84,15 @@
             <p>Are you sure you want to discard this event?</p>
             <button id="yes" class="confirm">Yes</button>
             <button id="no" class="confirm">No</button>
+          </div>
+        </div>
+
+        <!-- Delete Event Confirmation Modal -->
+        <div id="deleteEventModal" class="modal">
+          <div class="modal-content">
+            <p>Are you sure you want to delete this event?</p>
+            <button id="deleteYes" class="confirm">Yes</button>
+            <button id="deleteNo" class="confirm">No</button>
           </div>
         </div>
 
@@ -185,10 +194,10 @@
 
         <div class="nav__date-info">
           <div class="nav__controls">
-            <button class="button button--secondary desktop-only">
+            <button class="button button--secondary desktop-only" id="todayButton">
               Today
             </button>
-            <button class="button button--icon button--secondary mobile-only">
+            <button class="button button--icon button--secondary mobile-only" id="mobileTodayButton">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="button__icon">
@@ -205,14 +214,14 @@
               </svg>
             </button>
             <div class="nav__arrows">
-              <button class="button button--icon button--secondary">
+              <button class="button button--icon button--secondary" id="prevButton">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                   class="button__icon">
                   <path d="m15 18-6-6 6-6" />
                 </svg>
               </button>
-              <button class="button button--icon button--secondary">
+              <button class="button button--icon button--secondary" id="nextButton">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                   class="button__icon">
@@ -233,6 +242,11 @@
               class="select__icon">
               <path d="m6 9 6 6 6-6" />
             </svg>
+          </div>
+          <div class="mobile-view-selector">
+            <button class="active" data-view="month">Month</button>
+            <button data-view="week">Week</button>
+            <button data-view="day">Day</button>
           </div>
         </div>
       </div>
@@ -638,45 +652,8 @@
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                        <button class="event event--filled event--dynamic">
-                          <span class="event__color"></span>
-                          <span class="event__title"> my second event</span>
-                          <span class="event__time">
-                            <time>3:00 AM</time> - 
-                            <time>6:00 AM</time>
-                          </span>
-                        </button>
                     </div>
                      <div class="week-calendar__coloumn">
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                    </div>
-                     <div class="week-calendar__coloumn">
-                      <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
@@ -727,7 +704,6 @@
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
                     </div>
                      <div class="week-calendar__coloumn">
                       <div class="week-calendar__cell"></div>
@@ -754,37 +730,8 @@
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
                     </div>
                      <div class="week-calendar__coloumn">
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                    </div>
-                     <div class="week-calendar__coloumn">
-                      <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
@@ -909,8 +856,6 @@
                   </ul>
                   <div class="week-calendar__columns">
                     <div class="week-calendar__coloumn">
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
@@ -1115,177 +1060,6 @@
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                        <button class="event event--filled event--dynamic">
-                          <span class="event__color"></span>
-                          <span class="event__title"> my second event</span>
-                          <span class="event__time">
-                            <time>3:00 AM</time> - 
-                            <time>6:00 AM</time>
-                          </span>
-                        </button>
-                    </div>
-                     <div class="week-calendar__coloumn">
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                    </div>
-                     <div class="week-calendar__coloumn">
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                    </div>
-                     <div class="week-calendar__coloumn">
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                    </div>
-                     <div class="week-calendar__coloumn">
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                    </div>
-                     <div class="week-calendar__coloumn">
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                    </div>
-                     <div class="week-calendar__coloumn">
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
                     </div>
                   </div>
                 </div>
@@ -1386,8 +1160,6 @@
                   </ul>
                   <div class="week-calendar__columns">
                     <div class="week-calendar__coloumn">
-                      <div class="week-calendar__cell"></div>
-                      <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>

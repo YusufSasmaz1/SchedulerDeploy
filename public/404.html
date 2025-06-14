@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="images/CEO.png" />
+    <title>404 - Page Not Found</title>
+  </head>
+  <!-- To Avoid an Headache and simplifying my life, the stylesheet is  -->
+  <style> 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "poppins", sans-serif;
+      font-size: 16px;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100%;
+      background: linear-gradient(to left, #fe7b7b, #ff7e5f, #fe9a7b,#ff7e5f, #fe7b7b);
+      background-size: 200% 100%;
+      animation: background-mover 5s linear infinite;
+    }
+    marquee {
+      height: 100vh;
+    }
+    @keyframes spin { /*Animation For the 404 spinning*/
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes background-mover { /*Animation For the background moving*/
+      0% {
+        background-position: 0%;
+      }
+      100% {
+        background-position: -200%;
+      }
+    }
+    marquee span {
+      display: inline-block;
+      animation: spin 5s linear infinite;
+    }
+    span {
+      font-size: 5rem;
+      font-weight: bold;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    marquee span:hover {
+      color: transparent;
+      text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+      transition: all 0.3s ease-in-out;
+    }
+  
+  </style>
+  <body><!-- Code Stolen from https://youtu.be/Ja3HWqNoPHU, I didn't know anything about marquee-->
+    <marquee behavior="alternate" scrollamount="45" direction="right">
+      <marquee behavior="alternate" scrollamount="45" direction="down">
+          <span>404</span>
+      </marquee>
+    </marquee>
+  </body>
+</html> 
