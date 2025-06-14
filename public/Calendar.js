@@ -493,11 +493,13 @@ addTaskButton.onclick = () => {
   modal.style.display = "block";
   errorMessage.style.display = "none";
   typeEvent = "task";
+  eventTypeSelect.value = "task";
 };
 addReminderButton.onclick = () => {
   modal.style.display = "block";
   errorMessage.style.display = "none";
   typeEvent = "reminder";
+  eventTypeSelect.value = "reminder";
 };
 
 //Show the modal "Are you sure you want to cancel" when X is clicked
