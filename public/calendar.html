@@ -31,7 +31,7 @@
     </div>
     <main class="main">
       <div class="nav">
-        <button class="mobile-menu-button" id="mobileMenuButton">
+        <button class="button button--icon button--secondary mobile-only">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="button__icon">
             <path d="M4 12h16" />
@@ -194,10 +194,10 @@
 
         <div class="nav__date-info">
           <div class="nav__controls">
-            <button class="button button--secondary desktop-only" id="todayButton">
+            <button class="button button--secondary desktop-only">
               Today
             </button>
-            <button class="button button--icon button--secondary mobile-only" id="mobileTodayButton">
+            <button class="button button--icon button--secondary mobile-only">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="button__icon">
@@ -214,14 +214,14 @@
               </svg>
             </button>
             <div class="nav__arrows">
-              <button class="button button--icon button--secondary" id="prevButton">
+              <button class="button button--icon button--secondary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                   class="button__icon">
                   <path d="m15 18-6-6 6-6" />
                 </svg>
               </button>
-              <button class="button button--icon button--secondary" id="nextButton">
+              <button class="button button--icon button--secondary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                   class="button__icon">
@@ -242,11 +242,6 @@
               class="select__icon">
               <path d="m6 9 6 6 6-6" />
             </svg>
-          </div>
-          <div class="mobile-view-selector">
-            <button class="active" data-view="month">Month</button>
-            <button data-view="week">Week</button>
-            <button data-view="day">Day</button>
           </div>
         </div>
       </div>
@@ -856,6 +851,7 @@
                   </ul>
                   <div class="week-calendar__columns">
                     <div class="week-calendar__coloumn">
+                      <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
                       <div class="week-calendar__cell"></div>
