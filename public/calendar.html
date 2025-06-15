@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="Calendar.css" />
+  <link rel="icon" type="image/png" href="images/CEO.png" />
   <title>Calendar</title>
   <script defer src="Calendar.js"></script>
 </head>
@@ -43,63 +44,113 @@
         
         <div id="snackbar">Changes Saved</div>
 
-        <!-- Add Event Modal  --> 
-        <div id="addEventModal" class="modal">
-          <div class="modal-content">
-            <span class="close-main">&times;</span>
-            <h3>Add Event:</h3>
-            <input type="text" id="title" maxlength="50" placeholder="Event Title" />
+      <!--  Add Event Modal  --> 
+<div id="addEventModal" class="modal">
+  <div class="modal-content">
+    <span class="close-main">&times;</span>
+    <h3 class="modal-header">Add Event:</h3>
+    <p class="modal-title">Event Title</p>
+    <input class= "modal-box-width" type="text" id="title" maxlength="50" placeholder="Event Title" />
+    
+    <p class="modal-title">Select Date:
+    <input type="date" id="date" class="date modal-box-width"/>
+    </p>
+    
 
-            <p>Select Date:</p>
-            <input type="date" id="date" class="date" />
 
-            <div class="modal-all-day">
-              <span id="repeatLabel">Repeat: </span>
-              <span id="SliderRepeat" class="slider round">
-                <span class="slider-circle"></span><br>
-              </span>
-              <input type="date" id="repeatDate" class="date" style="display: none;" />
-            </div>
+   <div class="modal-title modal-title--row">
+  <p>Start Time</p>
+  <p>End Time</p>
+  </div>
+    <div class="time-range">
+      <input id="time1" type="time" />
+      <!-- <p >-</p> -->
+      <input id="time2" type="time" />
+    </div>
 
-            <div class="time-range">
-              <input id="time1" type="time" />
-              <p>-</p>
-              <input id="time2" type="time" />
-            </div>
+  <div class="modal-repeat-row">
+      <span id="repeatLabel">Repeat: </span>
+      <span id="SliderRepeat" class="slider round">
+        <span class="slider-circle"></span>
+      </span>
+      <div class="modal-box-width" style="margin: 0;">
+      <input type="date" id="repeatDate" class="date" style="display: none;" />
+      </div>
+    </div>
 
-            <div class="modal-all-day">
-              <p>All Day:</p>
-              <span id="SliderAllDay" class="slider round">
-                <span class="slider-circle"></span> <!-- Circle inside the slider -->
-              </span>
-            </div>
+    <div class="modal-all-day">
+      <p>All Day:</p>
+      <span id="SliderAllDay" class="slider round">
+        <span class="slider-circle"></span> <!--Circle inside the slider -->
+      </span>
+    </div>
 
-            <button id="submit" class="button button--primary button--lg">Save</button>
+    <div class="form__field"> <!-- Color Selection -->
+      <label class="modal-title" for="color">Color</label>
+      <div class="color-select">
+        <label class="color-select__item" style="--color-select-item-color: #ea580c">
+          <input type="radio" name="color" value="#ea580c" class="color-select__input" checked/>
+          <div class="color-select__color">
+            <div class="color-select__color-inner"></div>
           </div>
-        </div>
-
-        <!-- Cancel Confirmation Modal -->
-        <div id="cancelModal" class="modal">
-          <div class="modal-content">
-            <p>Are you sure you want to discard this event?</p>
-            <button id="yes" class="confirm">Yes</button>
-            <button id="no" class="confirm">No</button>
+        </label>
+        <label class="color-select__item" style="--color-select-item-color: #16a34a">
+          <input type="radio" name="color" value="#16a34a" class="color-select__input"/>
+          <div class="color-select__color">
+            <div class="color-select__color-inner"></div>
           </div>
-        </div>
-
-        <!-- Delete Event Confirmation Modal -->
-        <div id="deleteEventModal" class="modal">
-          <div class="modal-content">
-            <p>Are you sure you want to delete this event?</p>
-            <button id="deleteYes" class="confirm">Yes</button>
-            <button id="deleteNo" class="confirm">No</button>
+        </label>
+        <label class="color-select__item" style="--color-select-item-color: #7c3aed">
+          <input type="radio" name="color" value="#7c3aed" class="color-select__input"/>
+          <div class="color-select__color">
+            <div class="color-select__color-inner"></div>
           </div>
-        </div>
+        </label>
+        <label class="color-select__item" style="--color-select-item-color: #e11d48">
+          <input type="radio" name="color" value="#e11d48" class="color-select__input"/>
+          <div class="color-select__color">
+            <div class="color-select__color-inner"></div>
+          </div>
+        </label>
+        <label class="color-select__item" style="--color-select-item-color: #2563eb">
+          <input type="radio" name="color" value="#2563eb" class="color-select__input"/>
+          <div class="color-select__color">
+            <div class="color-select__color-inner"></div>
+          </div>
+        </label>
+      </div>
+    </div>
 
+    <div class="dialog__footer">
+      <div class="dialog__actions">
+        <button class="button button--secondary" type="button" data-dialog-close-button>Cancel</button>
+        <button class="button button--primary" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- Cancel Confirmation Modal -->
+<div id="cancelModal" class="modal">
+  <div class="modal-content">
+    <p>Are you sure you want to discard this event?</p>
+    <button id="yes" class="confirm">Yes</button>
+    <button id="no" class="confirm">No</button>
+  </div>
+</div>
+
+<!-- Delete Event Confirmation Modal -->
+<div id="deleteEventModal" class="modal">
+  <div class="modal-content">
+    <p>Are you sure you want to delete this event?</p>
+    <button id="deleteYes" class="confirm">Yes</button>
+    <button id="deleteNo" class="confirm">No</button>
+  </div>
+</div>    
 <!-- ////////////////////////////////////////////////////////////////////////////////-->
 
         <!-- Add Task Modal  -->
+
         <div id="addTaskModal" class="modal">
           <div class="modal-content">
             <span class="close-main">&times;</span>
@@ -134,6 +185,9 @@
           </div>
         </div>
 
+
+
+        
         <!-- Cancel Confirmation Modal -->
         <div id="cancelModal" class="modal">
           <div class="modal-content">
@@ -194,9 +248,7 @@
 
         <div class="nav__date-info">
           <div class="nav__controls">
-            <button class="button button--secondary desktop-only">
-              Today
-            </button>
+            <button class="button button--secondary desktop-only"> Today</button>
             <button class="button button--icon button--secondary mobile-only">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -248,227 +300,17 @@
       <div class="calendar">
         <div class="month-calendar month-calendar--five-week">
           <ul class="month-calendar__day-of-week-list">
-            <li class="month-calendar__day-of-week">Sun</li>
+            <li class="month-calendar__day-of-week weekend">Sun</li> <!-- Weekend class for styling -->
             <li class="month-calendar__day-of-week">Mon</li>
             <li class="month-calendar__day-of-week">Tue</li>
             <li class="month-calendar__day-of-week">Wed</li>
             <li class="month-calendar__day-of-week">Thu</li>
             <li class="month-calendar__day-of-week">Fri</li>
-            <li class="month-calendar__day-of-week">Sat</li>
+            <li class="month-calendar__day-of-week weekend">Sat</li>
           </ul>
 
           <div class="month-calendar__day-list-wrapper">
             <ul class="month-calendar__day-list">
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">30</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">1</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">2</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">3</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">4</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">5</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">6</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">6</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">7</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">8</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">9</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">10</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">11</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">12</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">13</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">14</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">15</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">16</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">17</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">18</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">19</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">20</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">21</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">22</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">23</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">24</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">25</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">26</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">27</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">28</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">29</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">30</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">31</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">1</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
-              <li class="month-calendar__day">
-                <button class="month-calendar__day-label">2</button>
-                <div class="month-calendar__event-list-wrapper">
-                  <ul class="event-list"></ul>
-                </div>
-              </li>
             </ul>
           </div>
         </div>
@@ -517,31 +359,6 @@
                   <span class="week-calendar__day-of-week-day">Sat</span>
                   <span class="week-calendar__day-of-week-num">13</span>
                   </button>
-                </li>
-              </ul>
-
-              <ul class="week-calendar__all-day-list">
-                <li class="week-calendar__all-day-list-item">
-                  <ul class="event-list">
-                  </ul>
-                </li>
-                <li class="week-calendar__all-day-list-item">
-                  <ul class="event-list"></ul>
-                </li>
-                <li class="week-calendar__all-day-list-item">
-                  <ul class="event-list"></ul>
-                </li>
-                <li class="week-calendar__all-day-list-item">
-                  <ul class="event-list"></ul>
-                </li>
-                <li class="week-calendar__all-day-list-item">
-                  <ul class="event-list"></ul>
-                </li>
-                <li class="week-calendar__all-day-list-item">
-                  <ul class="event-list"></ul>
-                </li>
-                <li class="week-calendar__all-day-list-item">
-                  <ul class="event-list"></ul>
                 </li>
               </ul>
 
@@ -765,14 +582,6 @@
                   </button>
                 </li>
               </ul>
-
-              <ul class="week-calendar__all-day-list">
-                <li class="week-calendar__all-day-list-item">
-                  <ul class="event-list">
-                  </ul>
-                </li>
-              </ul>
-
               <div class="week-calendar__content">
                 <div class="week-calendar__content-inner">
                   <ul class="week-calendar__time-list">

@@ -13,8 +13,6 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  /* cursor: url("./images/favicon.png"), auto; */
-  /* background: linear-gradient(135deg, #f5f7fa, #c3cfe2); */
 }
 .form {
   display: flex;
