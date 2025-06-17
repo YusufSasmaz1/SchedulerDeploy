@@ -36,7 +36,7 @@ body {
   /*Animation time*/
   --duration-sm: 100ms;
   --duration-md: 300ms;
-  --dueration-2xl: 3000ms;
+  --duration-2xl: 3000ms;
 
   /* Colours */
   --color-black: #000000;
@@ -73,7 +73,7 @@ body {
 .calendar {
   height: 100%;
 }
-
+/* Mobile view adjustments */
 @media (max-width: 768px) {
   .app {
     display: grid;
@@ -126,7 +126,7 @@ body {
   width: 140px;
   min-width: 0;
   margin-left: 0;
-  display: none; 
+  display: none;
 }
 
 #repeatDate {
@@ -178,7 +178,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom:1rem;
+  margin-bottom: 1rem;
 }
 
 .modal-header {
@@ -187,7 +187,7 @@ body {
 }
 
 .modal-box-width,
-.modal__input{
+.modal__input {
   height: 2.5rem;
   width: 100%;
   min-width: none;
@@ -279,12 +279,12 @@ body {
   width: 14px;
   border-radius: 50%;
   background-color: white;
-  transition: 0.3s;
+  transition: var(--duration-md) ease-in-out;
 }
 
 /* Change color of the slider when toggled */
-.modal-content.active .slider {
-  background-color: #4caf50;
+.modal-content#active .slider {
+  background-color: var(--color-green-600);
 }
 
 .modal-content.active .slider .slider-circle {
@@ -310,21 +310,27 @@ input[type="time"],
   margin: 10px;
   cursor: pointer;
 }
-
-.close-main {
-  color: #aaa;
+/*in javascript this will close it for purposes of this app and not ruining the formating the only thing it will do in CSS is transition */
+ .close-main { 
+  transition: background-color 0.2s;
+}
+.close-main-position {
+   color: var(--color-text--dark);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
   position: absolute;
   right: 10px;
-  top: 5px;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
+  top: 0;
 }
 
 .close-main:hover,
 .close-main:focus {
-  color: black;
-  text-decoration: none;
+  background-color: var(--color-gray-100);
 }
 
 /* Cancel Yes/No modal */
@@ -333,12 +339,8 @@ input[type="time"],
 }
 
 #cancelModal .confirm {
-  padding: 8px 16px;
-  margin: 0 5px;
-}
-
-#cancelModal .confirm:hover {
-  background-color: var(--color-blue-500);
+  width: 5rem;
+  font-size: 1rem;
 }
 
 #snackbar {
@@ -428,14 +430,26 @@ input[type="time"],
 }
 
 .today-highlight {
-  border: 3px solid #4a90e2 !important;
-  color: #4a90e2 !important;
-  font-weight: bold;
+  border: 3px solid var(--color-gray-100) !important;
+  color: var(--color-white) !important;
+  font-weight: bold;;
   border-radius: 50%;
-  animation: todayHighlight 0.3s ease forwards;
-  box-shadow: 0 0 0 1px rgba(74, 144, 226, 0.2);
+  backdrop-filter: blur(8px) saturate(180%);
+  box-shadow: 0 4px 24px 0 rgba(74, 144, 226, 0.25), 0 0 0 1px rgba(74, 144, 226, 0.2);
+  animation: todayHighlight var(--duration-2xl) ease forwards;
+  background: linear-gradient(135deg, #4a90e2, #3b82f6, #16a34a, #ffa500, #dc2626, #4a90e2);
+  background-size: 400% 400%;
+  animation: todayHighlight var(--duration-2xl) ease forwards, todayHighlightGradientSpin 2s linear infinite;
 }
 
+@keyframes todayHighlightGradientSpin {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
 @keyframes todayHighlight {
   0% {
     border-color: transparent;
@@ -1120,9 +1134,6 @@ input[type="time"],
   margin: 0 5px;
 }
 
-#deleteEventModal .confirm:hover {
-  background-color: var(--color-blue-500);
-}
 
 /* Sidebar button specific styles */
 #addEventButton {

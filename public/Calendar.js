@@ -28,7 +28,9 @@ const navDateElement = document.querySelector('.nav__date');
 const leftArrow = document.querySelectorAll('.nav__arrows button')[0];
 const rightArrow = document.querySelectorAll('.nav__arrows button')[1];
 const calendarDayList = document.querySelector('.month-calendar__day-list');
-const todayButton = document.querySelector('.nav__controls .button--secondary');
+const todayButtonPC = document.getElementById('todayButtonPC');
+const todayButtonMobile = document.getElementById('todayButtonMobile');
+
 
 // Tracks the current view (month, week, or day)
 let currentView = 'month'; // can be 'month', 'week', or 'day'
@@ -435,13 +437,16 @@ rightArrow.addEventListener('click', () => {
 });
 
 //today button logic (no longer needs to set highlight flag)
-if (todayButton) {
-  todayButton.addEventListener('click', () => {
+if (todayButtonPC && todayButtonMobile) {
+  const handleTodayClick = () => {
     currentDate = new Date();
     selectedDate = new Date();
     switchView(currentView, currentDate);
     renderCalendar();
-  });
+  };
+
+  todayButtonPC.addEventListener('click', handleTodayClick); // this is used for hand the pc and mobile versions
+  todayButtonMobile.addEventListener('click', handleTodayClick);
 }
 document.addEventListener('DOMContentLoaded', () => {
   todayHighlightFlag = false;
@@ -456,7 +461,8 @@ const cancelModal = document.getElementById("cancelModal");
 const addEventButton = document.getElementById("addEventButton");
 const addTaskButton = document.getElementById("addTaskButton");
 const addReminderButton = document.getElementById("addReminderButton");
-const closeMain = document.querySelectorAll(".close-main")[0];
+const closeMainCancel = document.querySelectorAll(".close-main")[1]; // to close the cancel modal
+const closeMainCross = document.querySelectorAll(".close-main")[0]; // to close the add event modal
 const submit = document.getElementById("submit");
 const yes = document.getElementById("yes");
 const no = document.getElementById("no");
@@ -503,7 +509,10 @@ addReminderButton.onclick = () => {
 };
 
 //Show the modal "Are you sure you want to cancel" when X is clicked
-closeMain.onclick = () => {
+closeMainCancel.onclick = () => {
+  cancelModal.style.display = "block";
+};
+closeMainCross.onclick = () => {
   cancelModal.style.display = "block";
 };
 

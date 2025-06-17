@@ -6,6 +6,7 @@
   font-size: var(--font-size-sm);
   line-height: var(--line-height-sm);
   font-weight: 400;
+  height:2.125rem;
   color: var(--color-text--dark);
   background-color: transparent;
   border-radius: var(--border-radius-md);
