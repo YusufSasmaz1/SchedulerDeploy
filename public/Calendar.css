@@ -17,21 +17,48 @@ body {
   line-height: 1.5;
   color: var(--color-text--dark);
 }
+/* Global CSS Variables */
 :root {
+  /* Font Sizes used globally */
   --font-size-sm: 0.875rem;
+  --font-size-xs: 0.75rem;
   --font-size-lg: 1.125rem;
+  --font-size-2xl: 1.5rem;
+
+  /* Line Heights used globally */
+  --line-size-xs: 1rem;
   --line-height-sm: 1.25rem;
   --line-height-lg: 1.75rem;
-  --border-radius-md: 0.25rem;
-  --duration-sm: 100ms;
+  --line-height-2xl: 2rem;
 
-  --color-blue-500: #2563eb;
+  --border-radius-md: 0.25rem;
+
+  /*Animation time*/
+  --duration-sm: 100ms;
+  --duration-md: 300ms;
+  --duration-2xl: 3000ms;
+
+  /* Colours */
+  --color-black: #000000;
+
+  --color-blue-500: #3b82f6;
   --color-blue-600: #2563eb;
+
+  --color-red-600: #dc2626;
+
+  --color-green-600: #16a34a;
+  /* Boring Colours */
   --color-white: #ffffff;
   --color-text--dark: #000;
   --color-gray-300: #d1d5db;
   --color-gray-100: #f3f4f6;
   --color-text-light: #f9fafb;
+  --color-gray-500: #6b7280;
+  --box-shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+.weekend {
+  color: var(--color-red-600);
 }
 .app {
   display: grid;
@@ -75,7 +102,44 @@ body {
   }
 }
 
+.modal-repeat-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0;
+}
 
+#repeatLabel {
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+#SliderRepeat {
+  width: 36px;
+  min-width: 36px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  margin: 0 4px;
+}
+
+.repeat-until-input {
+  width: 140px;
+  min-width: 0;
+  margin-left: 0;
+  display: none;
+}
+
+#repeatDate {
+  width: 80%;
+  height: 2.5rem;
+  padding-left: 1rem;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 1rem;
+}
 /* Modal backdrop */
 .modal {
   display: none;
@@ -86,12 +150,11 @@ body {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(52, 55, 61, 0.4);
+  background-color: rgba(var(--color-gray-500-rgb), 4);
   backdrop-filter: blur(4px);
 }
 
 /* Modal Event Details */
-
 .modalDetails {
   display: none;
   position: fixed;
@@ -104,27 +167,97 @@ body {
   background-color: rgba(52, 55, 61, 0.4);
   backdrop-filter: blur(4px);
 }
+.modal-title {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  color: var(--color-text--dark);
+  align-items: left;
+  margin-bottom: 1rem;
+}
+.modal-title--row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.modal-header {
+  font-size: var(--font-size-2xl);
+  text-align: center;
+}
+
+.modal-box-width,
+.modal__input {
+  height: 2.5rem;
+  width: 100%;
+  min-width: none;
+  box-sizing: 0;
+  text-align: left;
+  padding-left: 1rem;
+  border-radius: var(--border-radius-md);
+  right: 0;
+}
+
+.time-range {
+  display: flex;
+  justify-content: space-between;
+  height: 2.5rem;
+  font-size: 2.5rem;
+}
+.time-range p {
+  font-size: var(--font-size-lg);
+  justify-content: center;
+  align-items: center;
+}
+.modal-repeat-row {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Adjust spacing as needed */
+}
+
+.modal-repeat-row > * {
+  margin: 0;
+}
 
 /* Modal content box */
 .modal-content {
-  background-color: #fefefe;
-  margin: 10% auto;
-  padding: 20px;
-  border: 3px solid rgb(82, 97, 122);
-  width: 80%;
-  max-width: 400px;
-  position: relative;
-  text-align: center;
+  background-color: var(--color-white);
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin: 6% auto;
+  padding: 20px;
+  max-width: 400px;
+  position: relative;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-gray-500);
+}
+.modal-content:hover {
+  box-shadow: var(--box-shadow-md);
+  border: 2px solid var(--color-gray-500);
+  transform: scale(1.15);
+  transition: transform var(--duration-md) ease-in-out;
+}
+.modal-title,
+.modal-title--row {
+  margin-bottom: 0; /* Remove negative margin */
 }
 
 /* All Day slider styles */
 .modal-all-day {
   display: flex;
-  justify-content: center;
   align-items: center;
+  gap: 5px;
+}
+
+.dialog__actions {
+  display: flex;
+  justify-content: right;
+  margin-top: 20px;
+  gap: 10px;
 }
 
 .modal-content .slider {
@@ -134,7 +267,7 @@ body {
   border-radius: 50px;
   position: relative;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color var(--duration-md) ease-in-out;
 }
 
 /* Circle inside the slider */
@@ -147,18 +280,17 @@ body {
   width: 14px;
   border-radius: 50%;
   background-color: white;
-  transition: 0.3s;
+  transition: var(--duration-md) ease-in-out;
 }
 
 /* Change color of the slider when toggled */
-.modal-content.active .slider {
-  background-color: #4CAF50;  
+.modal-content#active .slider {
+  background-color: var(--color-green-600);
 }
 
 .modal-content.active .slider .slider-circle {
-  transform: translateX(14px);  /* Move the circle to the right */
+  transform: translateX(14px); /* Move the circle to the right */
 }
-
 
 .time-range {
   display: flex;
@@ -169,10 +301,9 @@ body {
 input[type="date"],
 input[type="time"],
 .submit {
-  width: 60%;  
+  width: 60%;
   margin: 0 auto;
 }
-
 
 /* Confirm and cancel button styles */
 .confirm {
@@ -180,78 +311,102 @@ input[type="time"],
   margin: 10px;
   cursor: pointer;
 }
-
-.close-main {
-  color: #aaa;
+/*in javascript this will close it for purposes of this app and not ruining the formating the only thing it will do in CSS is transition */
+ .close-main { 
+  transition: background-color 0.2s;
+}
+.close-main-position {
+   color: var(--color-text--dark);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
   position: absolute;
   right: 10px;
-  top: 5px;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
+  top: 0;
 }
 
 .close-main:hover,
 .close-main:focus {
-  color: black;
-  text-decoration: none;
+  background-color: var(--color-gray-100);
 }
 
 /* Cancel Yes/No modal */
 #cancelModal .modal-content {
   text-align: center;
-  
 }
 
 #cancelModal .confirm {
-  padding: 8px 16px;
-  margin: 0 5px;
-}
-
-#cancelModal .confirm:hover {
-  background-color: var(--color-blue-500);
+  width: 5rem;
+  font-size: 1rem;
 }
 
 #snackbar {
-  visibility: hidden; 
-  min-width: 250px; 
-  margin-left: -125px; 
-  background-color: rgb(30, 176, 67); 
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: rgb(30, 176, 67);
   color: #fff;
   text-align: center;
-  border-radius: 2px; 
-  padding: 16px; 
-  position: fixed; 
-  z-index: 1; 
-  left: 50%; 
-  bottom: 30px; 
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
 }
 
-
 #snackbar.show {
-  visibility: visible; 
+  visibility: visible;
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
 @-webkit-keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
 }
 
 @keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }
 
 @keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }
 
 .event-item {
@@ -276,14 +431,26 @@ input[type="time"],
 }
 
 .today-highlight {
-  border: 3px solid #4a90e2 !important;
-  color: #4a90e2 !important;
-  font-weight: bold;
+  border: 3px solid var(--color-gray-100) !important;
+  color: var(--color-white) !important;
+  font-weight: bold;;
   border-radius: 50%;
-  animation: todayHighlight 0.3s ease forwards;
-  box-shadow: 0 0 0 1px rgba(74, 144, 226, 0.2);
+  backdrop-filter: blur(8px) saturate(180%);
+  box-shadow: 0 4px 24px 0 rgba(74, 144, 226, 0.25), 0 0 0 1px rgba(74, 144, 226, 0.2);
+  animation: todayHighlight var(--duration-2xl) ease forwards;
+  background: linear-gradient(135deg, #4a90e2, #3b82f6, #16a34a, #ffa500, #dc2626, #4a90e2);
+  background-size: 400% 400%;
+  animation: todayHighlight var(--duration-2xl) ease forwards, todayHighlightGradientSpin 2s linear infinite;
 }
 
+@keyframes todayHighlightGradientSpin {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
 @keyframes todayHighlight {
   0% {
     border-color: transparent;
@@ -330,7 +497,7 @@ input[type="time"],
   list-style: none;
   border-bottom: 1px solid var(--color-gray-300);
   background: var(--color-white);
-  margin-left: 60px; /* Add margin instead of padding */
+  margin-left: 59px;
 }
 
 .week-calendar--day .week-calendar__day-of-week-list {
@@ -414,6 +581,7 @@ input[type="time"],
 .week-calendar__time-item {
   height: 60px;
   padding: 0.25rem;
+  /* margin-top: -0.5px; Adjust to align with the grid */
   border-bottom: 1px solid var(--color-gray-300);
   display: flex;
   align-items: start;
@@ -519,11 +687,11 @@ input[type="time"],
   .week-calendar__time-list {
     width: 50px;
   }
-  
+
   .week-calendar__time {
     font-size: 0.75rem;
   }
-  
+
   .week-calendar .event {
     font-size: 0.75rem;
   }
@@ -767,11 +935,11 @@ input[type="time"],
   .week-calendar__time-list {
     width: 50px;
   }
-  
+
   .week-calendar__time {
     font-size: 0.75rem;
   }
-  
+
   .week-calendar .event {
     font-size: 0.75rem;
   }
@@ -811,8 +979,8 @@ input[type="time"],
 
 .event-item--task,
 .event.event--dynamic.event-item--task {
-  background-color: #50c878; /* Emerald green for tasks */
-  border-left: 4px solid #3da066;
+  background-color: var(--color-green-600); /* Emerald green for tasks */
+  border-left: 4px solid var(--color-green-600);
 }
 
 .event-item--reminder,
@@ -829,7 +997,7 @@ input[type="time"],
 
 .event-item--task:hover,
 .event.event--dynamic.event-item--task:hover {
-  background-color: #3da066;
+  background-color: var(--color-green-600);
 }
 
 .event-item--reminder:hover,
@@ -867,7 +1035,7 @@ input[type="time"],
 .week-calendar__event.event-item--task,
 .day-calendar__event.event-item--task {
   background-color: #50c878;
-  border-left: 4px solid #3da066;
+  border-left: 4px solid var(--color-green-600);
 }
 
 .week-calendar__event.event-item--reminder,
@@ -884,7 +1052,7 @@ input[type="time"],
 
 .week-calendar__event.event-item--task:hover,
 .day-calendar__event.event-item--task:hover {
-  background-color: #3da066;
+  background-color: var(--color-green-600);
 }
 
 .week-calendar__event.event-item--reminder:hover,
@@ -921,7 +1089,7 @@ input[type="time"],
 .event.event--dynamic.event-item--task,
 .week-calendar__all-day-list .event-item--task {
   background-color: #50c878; /* Emerald green for tasks */
-  border-left: 4px solid #3da066;
+  border-left: 4px solid var(--color-green-600);
 }
 
 .event-item--reminder,
@@ -941,7 +1109,7 @@ input[type="time"],
 .event-item--task:hover,
 .event.event--dynamic.event-item--task:hover,
 .week-calendar__all-day-list .event-item--task:hover {
-  background-color: #3da066;
+  background-color: var(--color-green-600);
 }
 
 .event-item--reminder:hover,
@@ -967,9 +1135,6 @@ input[type="time"],
   margin: 0 5px;
 }
 
-#deleteEventModal .confirm:hover {
-  background-color: var(--color-blue-500);
-}
 
 /* Sidebar button specific styles */
 #addEventButton {
@@ -983,11 +1148,11 @@ input[type="time"],
 
 #addTaskButton {
   background-color: #50c878 !important;
-  border-left: 4px solid #3da066 !important;
+  border-left: 4px solid var(--color-green-600) !important;
 }
 
 #addTaskButton:hover {
-  background-color: #3da066 !important;
+  background-color: var(--color-green-600) !important;
 }
 
 #addReminderButton {
@@ -1006,4 +1171,57 @@ input[type="time"],
   color: white !important;
   font-weight: 500;
   transition: background-color 0.2s ease;
-} 
+}
+
+/* Color that will show up for dialog */
+.color-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.color-select__item {
+  position: relative;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.color-select__input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+.color-select__color {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.25rem;
+  border-radius: 50%;
+  border: 0.125rem solid var(--color-gray-300);
+  transition: border-color var(--duration-sm) ease-out;
+}
+.color-select__input:checked + .color-select__color {
+  border-color: var(--color-select-item-color);
+}
+.color-select__color-inner {
+  background-color: var(--color-select-item-color);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 0.75rem;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-gray-300);
+  border-radius: var(--border-radius-md);
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-gray-400);
+}
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--color-gray-500);
+}
