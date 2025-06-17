@@ -6,7 +6,7 @@
 }
 
 body {
-  background-image: url("images/F-35A.png");
+  background-image: url("./F-35A.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

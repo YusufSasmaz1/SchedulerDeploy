@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="Calendar.css" />
+  <link rel="icon" type="image/png" href="./CEO.png" />
   <title>Calendar</title>
   <script defer src="Calendar.js"></script>
 </head>
@@ -43,63 +44,116 @@
         
         <div id="snackbar">Changes Saved</div>
 
-        <!-- Add Event Modal  --> 
-        <div id="addEventModal" class="modal">
-          <div class="modal-content">
-            <span class="close-main">&times;</span>
-            <h3>Add Event:</h3>
-            <input type="text" id="title" maxlength="50" placeholder="Event Title" />
+      <!--  Add Event Modal  --> 
+<div id="addEventModal" class="modal">
+  <div class="modal-content">
+     <span class="close-main dialog__actions close-main-position"> 
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+     </span> 
+    <h3 class="modal-header">Add Entry:</h3>
+    <p class="modal-title">Event Title</p>
+    <input class= "modal-box-width" type="text" id="title" maxlength="50" placeholder="Event Title" />
+    
+    <p class="modal-title">Select Date:
+    <input type="date" id="date" class="date modal-box-width"/>
+    </p>
+    
 
-            <p>Select Date:</p>
-            <input type="date" id="date" class="date" />
 
-            <div class="modal-all-day">
-              <span id="repeatLabel">Repeat: </span>
-              <span id="SliderRepeat" class="slider round">
-                <span class="slider-circle"></span><br>
-              </span>
-              <input type="date" id="repeatDate" class="date" style="display: none;" />
-            </div>
+   <div class="modal-title modal-title--row">
+  <p>Start Time</p>
+  <p>End Time</p>
+  </div>
+    <div class="time-range">
+      <input id="time1" type="time" />
+      <input id="time2" type="time" />
+    </div>
 
-            <div class="time-range">
-              <input id="time1" type="time" />
-              <p>-</p>
-              <input id="time2" type="time" />
-            </div>
+  <div class="modal-repeat-row">
+      <span id="repeatLabel">Repeat: </span>
+      <span id="SliderRepeat" class="slider round">
+        <span class="slider-circle"></span>
+      </span>
+      <div class="modal-box-width" style="margin: 0;">
+      <input type="date" id="repeatDate" class="date" style="display: none;" />
+      </div>
+    </div>
 
-            <div class="modal-all-day">
-              <p>All Day:</p>
-              <span id="SliderAllDay" class="slider round">
-                <span class="slider-circle"></span> <!-- Circle inside the slider -->
-              </span>
-            </div>
+    <div class="modal-all-day">
+      <p>All Day:</p>
+      <span id="SliderAllDay" class="slider round">
+        <span class="slider-circle"></span> <!--Circle inside the slider -->
+      </span>
+    </div>
 
-            <button id="submit" class="button button--primary button--lg">Save</button>
+    <div class="form__field"> <!-- Color Selection -->
+      <label class="modal-title" for="color">Color</label>
+      <div class="color-select">
+        <label class="color-select__item" style="--color-select-item-color: #ea580c">
+          <input type="radio" name="color" value="#ea580c" class="color-select__input" checked/>
+          <div class="color-select__color">
+            <div class="color-select__color-inner"></div>
           </div>
-        </div>
-
-        <!-- Cancel Confirmation Modal -->
-        <div id="cancelModal" class="modal">
-          <div class="modal-content">
-            <p>Are you sure you want to discard this event?</p>
-            <button id="yes" class="confirm">Yes</button>
-            <button id="no" class="confirm">No</button>
+        </label>
+        <label class="color-select__item" style="--color-select-item-color: #16a34a">
+          <input type="radio" name="color" value="#16a34a" class="color-select__input"/>
+          <div class="color-select__color">
+            <div class="color-select__color-inner"></div>
           </div>
-        </div>
-
-        <!-- Delete Event Confirmation Modal -->
-        <div id="deleteEventModal" class="modal">
-          <div class="modal-content">
-            <p>Are you sure you want to delete this event?</p>
-            <button id="deleteYes" class="confirm">Yes</button>
-            <button id="deleteNo" class="confirm">No</button>
+        </label>
+        <label class="color-select__item" style="--color-select-item-color: #7c3aed">
+          <input type="radio" name="color" value="#7c3aed" class="color-select__input"/>
+          <div class="color-select__color">
+            <div class="color-select__color-inner"></div>
           </div>
-        </div>
+        </label>
+        <label class="color-select__item" style="--color-select-item-color: #e11d48">
+          <input type="radio" name="color" value="#e11d48" class="color-select__input"/>
+          <div class="color-select__color">
+            <div class="color-select__color-inner"></div>
+          </div>
+        </label>
+        <label class="color-select__item" style="--color-select-item-color: #2563eb">
+          <input type="radio" name="color" value="#2563eb" class="color-select__input"/>
+          <div class="color-select__color">
+            <div class="color-select__color-inner"></div>
+          </div>
+        </label>
+      </div>
+    </div>
 
+      <div class="dialog__actions">
+        <button class="close-main button button--secondary">Cancel</button>
+        <button id="submit" class="button button--primary">Save</button>
+      </div>
+  </div>
+</div>
 
+<!-- Cancel Confirmation Modal -->
+<div id="cancelModal" class="modal">
+  <div class="modal-content">
+    <p>Are you sure you want to discard this Entry?</p>
+    <div class="buttonPlacement">
+      <button id="yes" class="confirm button button--secondary">Yes</button>
+      <button id="no" class="confirm button button--primary">No</button>
+    
+  </div>
+</div>
+
+<!-- Delete Event Confirmation Modal -->
+<div id="deleteEventModal" class="modal">
+  <p>Are you sure you want to delete this Entry?</p>
+  <div class="modal-content">
+     <div class="buttonPlacement"></div>
+    <button id="deleteYes" class="confirm button button--secondary">Yes</button>
+    <button id="deleteNo" class="confirm button button--primary">No</button>
+    </div>
+  </div>
+</div>    
 <!-- ////////////////////////////////////////////////////////////////////////////////-->
 
         <!-- Add Task Modal  -->
+
         <div id="addTaskModal" class="modal">
           <div class="modal-content">
             <span class="close-main">&times;</span>
@@ -134,6 +188,7 @@
           </div>
         </div>
 
+        
         <!-- Cancel Confirmation Modal -->
         <div id="cancelModal" class="modal">
           <div class="modal-content">
@@ -143,8 +198,7 @@
           </div>
         </div>
 
-        
-<!-- ////////////////////////////////////////////////////////////////////////////////-->
+ <!-- ////////////////////////////////////////////////////////////////////////////////-->
 
  <!-- Add Reminder Modal  -->
  <div id="addReminderModal" class="modal">
@@ -194,10 +248,10 @@
 
         <div class="nav__date-info">
           <div class="nav__controls">
-            <button class="button button--secondary desktop-only">
+            <button class="button button--secondary desktop-only" id="todayButtonPC">
               Today
             </button>
-            <button class="button button--icon button--secondary mobile-only">
+            <button class="button button--icon button--secondary mobile-only" id ="todayButtonMobile">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="button__icon">
@@ -248,13 +302,13 @@
       <div class="calendar">
         <div class="month-calendar month-calendar--five-week">
           <ul class="month-calendar__day-of-week-list">
-            <li class="month-calendar__day-of-week">Sun</li>
+            <li class="month-calendar__day-of-week weekend">Sun</li>
             <li class="month-calendar__day-of-week">Mon</li>
             <li class="month-calendar__day-of-week">Tue</li>
             <li class="month-calendar__day-of-week">Wed</li>
             <li class="month-calendar__day-of-week">Thu</li>
             <li class="month-calendar__day-of-week">Fri</li>
-            <li class="month-calendar__day-of-week">Sat</li>
+            <li class="month-calendar__day-of-week weekend">Sat</li>
           </ul>
 
           <div class="month-calendar__day-list-wrapper">
